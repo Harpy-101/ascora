@@ -1,0 +1,133 @@
+name: "[Bucket] Workstream / Feature Group"
+description: Group related tasks, bugs, and follow-up issues under one larger effort.
+title: "[Bucket]: "
+labels:
+  - bucket
+  - planning
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this issue as a parent/workstream tracker for a larger feature or area of work.
+        This is not meant to describe one small implementation task. Link related issues below.
+
+  - type: input
+    id: bucket_area
+    attributes:
+      label: Area
+      description: Which product or technical area does this bucket belong to?
+      placeholder: "Example: Registration, Notifications, Announcements, Billing, Realtime"
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What is the outcome this bucket should achieve?
+      placeholder: "Example: Redesign the session registration flow so users can register, switch squads, and cancel registration from a unified flow."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / Background
+      description: Why is this bucket needed? What problem does it solve?
+      placeholder: |
+        Current problem:
+        - ...
+
+        Why now:
+        - ...
+
+        Related decisions:
+        - ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What is included in this bucket?
+      placeholder: |
+        Included:
+        - ...
+        - ...
+
+        Not included:
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: subtasks
+    attributes:
+      label: Subtasks / Linked Issues
+      description: List the child tasks or link existing issues.
+      placeholder: |
+        - [ ] #123
+        - [ ] Build UI shell
+        - [ ] Add DB mutation
+        - [ ] Add realtime updates
+        - [ ] Add error handling
+        - [ ] QA mobile layout
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What must be true before this bucket can be considered complete?
+      placeholder: |
+        - [ ] Users can complete the main flow successfully.
+        - [ ] Edge cases are handled.
+        - [ ] Errors are reported through the observability wrapper.
+        - [ ] Mobile and desktop layouts are acceptable.
+        - [ ] Related issues are closed or intentionally deferred.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this bucket?
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+      default: 1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status
+      description: Current state of this bucket.
+      options:
+        - Backlog
+        - Planned
+        - In progress
+        - Blocked
+        - Ready for review
+        - Done
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks / Open Questions
+      description: What could complicate this work?
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: false
