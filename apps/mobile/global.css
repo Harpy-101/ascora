@@ -36,3 +36,87 @@
     }
   }
 }
+/* 
+@layer theme {
+  :root {
+    @variant light {
+      --background: 0 0% 100%;
+      --foreground: 210 11% 16%;
+
+      --card: 0 0% 100%;
+      --card-foreground: 210 11% 16%;
+
+      --primary: 159 100% 48%;
+      --primary-foreground: 210 11% 16%;
+
+      --secondary: 210 8% 92%;
+      --secondary-foreground: 210 11% 16%;
+
+      --muted: 210 8% 92%;
+      --muted-foreground: 210 7% 40%;
+
+      --accent: 159 100% 48%;
+      --accent-foreground: 210 11% 16%;
+
+      --border: 210 7% 82%;
+      --input: 210 7% 82%;
+      --ring: 159 100% 48%;
+
+      --color-background: hsl(var(--background));
+      --color-foreground: hsl(var(--foreground));
+      --color-card: hsl(var(--card));
+      --color-card-foreground: hsl(var(--card-foreground));
+      --color-primary: hsl(var(--primary));
+      --color-primary-foreground: hsl(var(--primary-foreground));
+      --color-secondary: hsl(var(--secondary));
+      --color-secondary-foreground: hsl(var(--secondary-foreground));
+      --color-muted: hsl(var(--muted));
+      --color-muted-foreground: hsl(var(--muted-foreground));
+      --color-accent: hsl(var(--accent));
+      --color-accent-foreground: hsl(var(--accent-foreground));
+      --color-border: hsl(var(--border));
+      --color-input: hsl(var(--input));
+      --color-ring: hsl(var(--ring));
+    }
+
+    @variant dark {
+      --background: 210 11% 18%;
+      --foreground: 0 0% 98%;
+
+      --card: 210 11% 22%;
+      --card-foreground: 0 0% 98%;
+
+      --primary: 159 100% 48%;
+      --primary-foreground: 210 11% 16%;
+
+      --secondary: 210 10% 25%;
+      --secondary-foreground: 0 0% 98%;
+
+      --muted: 210 10% 25%;
+      --muted-foreground: 210 8% 70%;
+
+      --accent: 159 100% 48%;
+      --accent-foreground: 210 11% 16%;
+
+      --border: 210 8% 30%;
+      --input: 210 8% 30%;
+      --ring: 159 100% 48%;
+
+      --color-background: hsl(var(--background));
+      --color-foreground: hsl(var(--foreground));
+      --color-card: hsl(var(--card));
+      --color-card-foreground: hsl(var(--card-foreground));
+      --color-primary: hsl(var(--primary));
+      --color-primary-foreground: hsl(var(--primary-foreground));
+      --color-secondary: hsl(var(--secondary));
+      --color-secondary-foreground: hsl(var(--secondary-foreground));
+      --color-muted: hsl(var(--muted));
+      --color-muted-foreground: hsl(var(--muted-foreground));
+      --color-accent: hsl(var(--accent));
+      --color-accent-foreground: hsl(var(--accent-foreground));
+      --color-border: hsl(var(--border));
+      --color-input: hsl(var(--input));
+      --color-ring: hsl(var(--ring));
+    }
+  }
+} */
