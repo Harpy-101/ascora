@@ -4,13 +4,11 @@ import { Dimensions, Keyboard, Pressable, View } from "react-native";
 import { ChevronUp, Trash2 } from "lucide-react-native";
 import SetSetAsDoneButton from "./lib/SetSetAsDoneButton";
 import Animated, {
-  Extrapolation,
+  Easing,
   FadeInRight,
   FadeOutLeft,
-  interpolate,
   LinearTransition,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
@@ -39,30 +37,27 @@ export default function ExerciseAccordion({
 }) {
   const [sets, setSets] = useState(exercise.sets);
   const expanded = useSharedValue(false);
-  const progress = useDerivedValue(() =>
-    expanded.value ? withTiming(1) : withTiming(0),
-  );
 
   const SCREEN_WIDTH = Dimensions.get("window").width;
 
-  const heightValue = useSharedValue(0);
+  const accordionHeight = useSharedValue(0);
+  const messuredHeight = useSharedValue(0);
+  const contentProgress = useSharedValue(0);
+
+  const HEIGHT_BUFFER = 12;
+
   const heightAnimationStyle = useAnimatedStyle(() => ({
-    height: interpolate(
-      progress.value,
-      [0, 1],
-      [0, heightValue.value + 12],
-      Extrapolation.CLAMP,
-    ),
+    height: accordionHeight.value,
     overflow: "hidden",
   }));
 
   const contentStyle = useAnimatedStyle(() => ({
-    opacity: progress.value,
-    transform: [{ translateY: (1 - progress.value) * -8 }],
+    opacity: contentProgress.value,
+    transform: [{ translateY: (1 - contentProgress.value) * -8 }],
   }));
 
   const iconStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${progress.value * 180}deg` }],
+    transform: [{ rotate: `${contentProgress.value * 180}deg` }],
   }));
 
   if (!exercise) {
@@ -80,7 +75,21 @@ export default function ExerciseAccordion({
   }
 
   function toggle() {
-    expanded.value = !expanded.value;
+    const nextExpand = !expanded.value;
+    expanded.value = nextExpand;
+
+    accordionHeight.value = withTiming(
+      nextExpand ? messuredHeight.value + HEIGHT_BUFFER : 0,
+      {
+        duration: 250,
+        easing: Easing.inOut(Easing.quad),
+      },
+    );
+
+    contentProgress.value = withTiming(nextExpand ? 1 : 0, {
+      duration: 250,
+      easing: Easing.inOut(Easing.quad),
+    });
   }
 
   function addSet() {
@@ -122,7 +131,7 @@ export default function ExerciseAccordion({
     }));
 
     function handleDelete() {
-      deleteProgress.value = withTiming(1, { duration: 1000 }, (finisehd) => {
+      deleteProgress.value = withTiming(1, { duration: 180 }, (finisehd) => {
         if (finisehd) {
           scheduleOnRN(onDelete);
         }
@@ -214,7 +223,16 @@ export default function ExerciseAccordion({
           className="absolute left-0 right-0 opacity-0"
           pointerEvents="none"
           onLayout={(event) => {
-            heightValue.value = event.nativeEvent.layout.height;
+            const newHeight = event.nativeEvent.layout.height;
+
+            messuredHeight.value = newHeight;
+
+            if (expanded.value) {
+              accordionHeight.value = withTiming(newHeight + HEIGHT_BUFFER, {
+                duration: 220,
+                easing: Easing.inOut(Easing.quad),
+              });
+            }
           }}
         >
           <View className="mt-4 gap-3">
