@@ -1,5 +1,4 @@
 import { Text } from "@/components/ui/text";
-import { Check } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 import { Pressable } from "react-native";
 import Animated, {
@@ -7,14 +6,23 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { useWatch } from "react-hook-form";
 
 export default function SetSetAsDoneButton({
-  completed,
+  // completed,
   onPress,
+  exerciseIndex,
+  setIndex,
 }: {
   completed: boolean;
   onPress: () => void;
+  exerciseIndex: number;
+  setIndex: number;
 }) {
+  const completed = useWatch({
+    name: `exercises.${exerciseIndex}.sets.${setIndex}.completed`,
+  });
+
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
