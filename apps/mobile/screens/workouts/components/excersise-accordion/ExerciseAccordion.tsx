@@ -1,6 +1,6 @@
 import { Text } from "@/components/ui/text";
 import { Keyboard, Pressable, View } from "react-native";
-import { ChevronDown, Ellipsis } from "lucide-react-native";
+import { ChevronDown } from "lucide-react-native";
 import SetSetAsDoneButton from "./lib/SetSetAsDoneButton";
 import Animated, {
   Easing,
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
 import SetRow from "../SetRow";
+import ExerciseAccordionDropDownMenu from "./ExerciseAccordionDropDownMenu";
 
 export default function ExerciseAccordion({
   exerciseIndex,
@@ -140,10 +141,14 @@ export default function ExerciseAccordion({
         </Pressable>
 
         <View className="flex-row inline-flex gap-2">
-          <Pressable onPress={onRemoveExercise}>
+          <ExerciseAccordionDropDownMenu
+            exerciseName={exercise.name}
+            onRemoveExercise={onRemoveExercise}
+          />
+          {/* <Pressable onPress={onRemoveExercise}>
             <Ellipsis color="white" />
-          </Pressable>
-          <Pressable onPress={toggle}>
+          </Pressable> */}
+          <Pressable onPress={toggle} hitSlop={10}>
             <Animated.View style={iconStyle}>
               <ChevronDown color="white" />
             </Animated.View>
