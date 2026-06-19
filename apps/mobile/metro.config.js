@@ -7,6 +7,8 @@ const config = getDefaultConfig(__dirname);
 
 // module.exports = config;
 
+config.resolver.sourceExts.push("sql");
+
 module.exports = withUniwindConfig(config, {
   // relative path to your global.css file (from previous step)
   cssEntryFile: "./global.css",
