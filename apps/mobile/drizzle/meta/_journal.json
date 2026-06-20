@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1781724218389,
+      "tag": "0000_slimy_warpath",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1781863593846,
+      "tag": "0001_add_users__workouts_workout_sets_and_workout_exercise_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1781864837412,
+      "tag": "0002_rename_users_table",
+      "breakpoints": true
+    }
+  ]
+}
