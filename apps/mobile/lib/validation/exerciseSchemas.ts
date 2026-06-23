@@ -10,6 +10,7 @@ const SetSchema = z.object({
 
 const ExerciseSchema = z.object({
   id: z.string(),
+  exerciseId: z.string(),
   name: z.string(),
   sets: z.array(SetSchema).min(1),
 });

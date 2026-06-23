@@ -32,18 +32,18 @@ export default async function insertWorkout(values: WorkoutFormValues) {
     });
 
     for (const [index, exercise] of values.exercises.entries()) {
-      const workoutExerciseId = createId();
+      // const workoutExerciseId = createId();
       await tx.insert(workoutExercises).values({
-        id: workoutExerciseId,
+        id: exercise.id,
         workoutId: workoutId,
         position: index + 1,
-        exerciseId: exercise.id,
+        exerciseId: exercise.exerciseId,
         createdAt: nowIso,
       });
 
       const setRows = exercise.sets.map((set) => ({
         id: createId(),
-        workoutExerciseId: workoutExerciseId,
+        workoutExerciseId: exercise.id,
         setNumber: set.setNumber,
         weightInKg: Number(set.weight),
         reps: Number(set.reps),
