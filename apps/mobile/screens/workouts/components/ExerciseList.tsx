@@ -2,41 +2,16 @@ import { Button } from "@/components/ui/button";
 import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import ExerciseAccordion from "./excersise-accordion/ExerciseAccordion";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
-
 import { useState } from "react";
 import ExerciseListitem from "./ExerciseListItem";
+import { useRouter } from "expo-router";
+import { useActiveWorkoutForm } from "@/contexts/active-workout-form-context";
 
 export default function ExerciseList() {
-  const { control } = useFormContext<WorkoutFormValues>();
+  const router = useRouter();
+  const { removeExercise, exerciseFields } = useActiveWorkoutForm();
 
   const [deletingExerciseId, setDeletingExerciseId] = useState(() => new Set());
-
-  const {
-    fields: exercisFields,
-    append,
-    remove,
-  } = useFieldArray({
-    control,
-    name: "exercises",
-  });
-
-  function addExercise() {
-    append({
-      id: `temp-exercise-${Date.now()}`,
-      name: "New exercise",
-      sets: [
-        {
-          id: `temp-set-${Date.now()}`,
-          setNumber: 1,
-          weight: "",
-          reps: "",
-          completed: false,
-        },
-      ],
-    });
-  }
 
   function requestRemoveExercise(fieldId: string) {
     setDeletingExerciseId((current) => {
@@ -47,10 +22,10 @@ export default function ExerciseList() {
   }
 
   function commitRemoveExcerise(fieldId: string) {
-    const index = exercisFields.findIndex((field) => field.id === fieldId);
+    const index = exerciseFields.findIndex((field) => field.id === fieldId);
 
     if (index !== -1) {
-      remove(index);
+      removeExercise(index);
     }
 
     setDeletingExerciseId((current) => {
@@ -65,12 +40,16 @@ export default function ExerciseList() {
       <View className="flex-row items-center justify-between mb-4">
         <Text className="text-lg font-semibold">Exercises</Text>
 
-        <Button variant="outline" size="sm" onPress={addExercise}>
+        <Button
+          variant="outline"
+          size="sm"
+          onPress={() => router.push("./workouts/ExerciseLibrary")}
+        >
           <Text>+ Exercise</Text>
         </Button>
       </View>
 
-      {exercisFields.map((exercise, index) => (
+      {exerciseFields.map((exercise, index) => (
         <ExerciseListitem
           key={exercise.id}
           isDeleting={deletingExerciseId.has(exercise.id)}
