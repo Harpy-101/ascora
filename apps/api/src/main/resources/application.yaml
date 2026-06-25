@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ascora
+    username: ascora
+    password: ascora
+
+  flyway:
+    enabled: true
+
+server:
+  port: 8080
+
+ascend-db:
+  base-url: ${ASCEND_DB_BASE_URL:http://localhost:9999}
+  api-key: ${ASCEND_DB_API_KEY:dev-placeholder}
