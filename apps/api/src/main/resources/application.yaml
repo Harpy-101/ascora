@@ -14,5 +14,6 @@ server:
   port: 8080
 
 ascend-db:
-  base-url: ${ASCEND_DB_BASE_URL:http://localhost:9999}
-  api-key: ${ASCEND_DB_API_KEY:dev-placeholder}
+  base-url: https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1
+  rapidapi-host: edb-with-videos-and-images-by-ascendapi.p.rapidapi.com
+  api-key: ${ASCEND_DB_API_KEY}
