@@ -11,286 +11,11 @@ import {
 import useDebounce from "./hooks/use-debounce";
 
 import FilterRow from "./components/FilterRow";
+import useExerciseSearch from "./hooks/use-exercise-search";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 export default function ExerciseLibraryScreen() {
-  const mockExercises = {
-    success: true,
-    meta: {
-      total: 13,
-      hasNextPage: true,
-      hasPreviousPage: false,
-      nextCursor: "exr_41n2hsVHu7B1MTdr",
-    },
-    data: [
-      {
-        exerciseId: "exr_41n2hdCBvmbCPaVE",
-        name: "Diamond Press",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/6SPVwjalAc.jpg",
-        bodyParts: ["BACK", "CHEST"],
-        equipments: ["BODY WEIGHT"],
-        exerciseType: "STRENGTH",
-        targetMuscles: [
-          "PECTORALIS MAJOR STERNAL HEAD",
-          "PECTORALIS MAJOR CLAVICULAR HEAD",
-          "ERECTOR SPINAE",
-        ],
-        secondaryMuscles: ["ANTERIOR DELTOID"],
-        keywords: [
-          "Diamond Press exercise",
-          "Bodyweight back workout",
-          "Chest exercises at home",
-          "Diamond Press for chest",
-          "Bodyweight Diamond Press",
-          "No-equipment back exercises",
-          "Diamond Press workout routine",
-          "Bodyweight exercises for back and chest",
-          "Diamond Press technique",
-          "How to do Diamond Press exercise",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hGUso7JFmuYR",
-        name: "Decline Push-Up",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/Fw2auG2NBK.jpg",
-        bodyParts: ["CHEST"],
-        equipments: ["BODY WEIGHT"],
-        exerciseType: "STRENGTH",
-        targetMuscles: [
-          "PECTORALIS MAJOR CLAVICULAR HEAD",
-          "PECTORALIS MAJOR STERNAL HEAD",
-        ],
-        secondaryMuscles: ["ANTERIOR DELTOID", "TRICEPS BRACHII"],
-        keywords: [
-          "Decline Push-Up workout",
-          "Body weight chest exercises",
-          "Decline Push-Up technique",
-          "How to do Decline Push-Ups",
-          "Home workouts for chest",
-          "Bodyweight exercises for pectorals",
-          "Decline Push-Up benefits",
-          "Decline Push-Up for chest strength",
-          "Improving chest muscles with Decline Push-Up",
-          "No-equipment chest workout",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hHLE8aJXaxKR",
-        name: "Cobra Push-up",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/RMvhPtQeG7.jpg",
-        bodyParts: ["CHEST", "HIPS"],
-        equipments: ["BODY WEIGHT"],
-        exerciseType: "STRENGTH",
-        targetMuscles: [
-          "PECTORALIS MAJOR STERNAL HEAD",
-          "GLUTEUS MAXIMUS",
-          "ERECTOR SPINAE",
-        ],
-        secondaryMuscles: [
-          "HAMSTRINGS",
-          "PECTORALIS MAJOR CLAVICULAR HEAD",
-          "TRICEPS BRACHII",
-          "ANTERIOR DELTOID",
-        ],
-        keywords: [
-          "Cobra Push-up workout",
-          "Body weight exercises for chest",
-          "Hips strengthening exercises",
-          "Cobra Push-up technique",
-          "Body weight chest workout",
-          "Cobra Push-up benefits",
-          "Push-up variations",
-          "Cobra Push-up tutorial",
-          "Home workouts for chest",
-          "Body weight exercises for hips.",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hkK8hGAcSnW7",
-        name: "Chest Dip",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/w39q9vcRo1.jpg",
-        bodyParts: ["CHEST"],
-        equipments: ["BODY WEIGHT"],
-        exerciseType: "STRENGTH",
-        targetMuscles: ["PECTORALIS MAJOR STERNAL HEAD"],
-        secondaryMuscles: [
-          "ANTERIOR DELTOID",
-          "LATISSIMUS DORSI",
-          "TRICEPS BRACHII",
-          "PECTORALIS MAJOR CLAVICULAR HEAD",
-          "LEVATOR SCAPULAE",
-        ],
-        keywords: [
-          "Bodyweight Chest Exercise",
-          "Chest Dip Workout",
-          "Home Chest Exercise",
-          "Bodyweight Dip Training",
-          "Chest Strengthening Exercise",
-          "No Equipment Chest Workout",
-          "Bodyweight Pectoral Exercise",
-          "Dip Exercise for Chest",
-          "Bodyweight Chest Muscle Training",
-          "Chest Dip Bodyweight Technique",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hKZmyYXB2UL4",
-        name: "Elbows Back Stretch ",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/ZBbn7b0eVR.jpg",
-        bodyParts: ["BACK", "CHEST"],
-        equipments: ["BODY WEIGHT"],
-        exerciseType: "STRENGTH",
-        targetMuscles: ["TRICEPS BRACHII"],
-        secondaryMuscles: [],
-        keywords: [
-          "Bodyweight back stretch",
-          "Elbows back exercise",
-          "Back and chest workout",
-          "Bodyweight chest stretch",
-          "Elbow stretch for back",
-          "Home exercise for back and chest",
-          "No equipment back stretch",
-          "Bodyweight exercise for back strength",
-          "Elbows back stretching technique",
-          "Chest opening bodyweight exercise",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hmvGdVRvvnNY",
-        name: "Pike Push up ",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/NPtWT9FuRZ.jpg",
-        bodyParts: ["CHEST"],
-        equipments: ["BODY WEIGHT"],
-        exerciseType: "STRENGTH",
-        targetMuscles: [
-          "PECTORALIS MAJOR CLAVICULAR HEAD",
-          "PECTORALIS MAJOR STERNAL HEAD",
-        ],
-        secondaryMuscles: [
-          "LATERAL DELTOID",
-          "SERRATUS ANTERIOR",
-          "ANTERIOR DELTOID",
-          "TRICEPS BRACHII",
-        ],
-        keywords: [
-          "Pike Push Up Workout",
-          "Bodyweight Chest Exercise",
-          "Pike Push Up Tutorial",
-          "Home Chest Workout",
-          "No Equipment Chest Exercise",
-          "Pike Push Up Benefits",
-          "How to do Pike Push Ups",
-          "Bodyweight Fitness Routine",
-          "Chest Strengthening Exercises",
-          "Advanced Bodyweight Exercise",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hNXJadYcfjnd",
-        name: "Push-up",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/cuG10rd4ea.jpg",
-        bodyParts: ["CHEST"],
-        equipments: ["BODY WEIGHT"],
-        exerciseType: "STRENGTH",
-        targetMuscles: ["PECTORALIS MAJOR STERNAL HEAD"],
-        secondaryMuscles: [
-          "TRICEPS BRACHII",
-          "ANTERIOR DELTOID",
-          "PECTORALIS MAJOR CLAVICULAR HEAD",
-        ],
-        keywords: [
-          "Chest workout at home",
-          "Bodyweight exercises for chest",
-          "Push-up variations",
-          "How to do a push-up",
-          "Benefits of push-ups",
-          "Push-up technique",
-          "Upper body bodyweight exercises",
-          "Strengthening chest muscles",
-          "Bodyweight chest workout",
-          "Home workouts for chest.",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hQeNyCnt3uFh",
-        name: "Back Pec Stretch",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/11TGBvhnYQ.jpg",
-        bodyParts: ["BACK", "CHEST"],
-        equipments: ["BODY WEIGHT"],
-        exerciseType: "STRENGTH",
-        targetMuscles: ["LATISSIMUS DORSI"],
-        secondaryMuscles: [],
-        keywords: [
-          "Back Pec Stretch exercise",
-          "Bodyweight Back and Chest workout",
-          "Back Pec Stretching routine",
-          "Bodyweight exercise for Back and Chest",
-          "Back Pec Stretch without equipment",
-          "Home workout for Back and Chest",
-          "Back and Pectoral Stretch exercise",
-          "Bodyweight Pec Stretch",
-          "Back and Chest strengthening exercises",
-          "No-equipment Back Pec Stretch workout",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hs6camM22yBG",
-        name: "Seated Shoulder Press",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/bQUAOjC7qA.jpg",
-        bodyParts: ["SHOULDERS"],
-        equipments: ["DUMBBELL"],
-        exerciseType: "STRENGTH",
-        targetMuscles: ["ANTERIOR DELTOID"],
-        secondaryMuscles: [
-          "PECTORALIS MAJOR CLAVICULAR HEAD",
-          "TRICEPS BRACHII",
-          "SERRATUS ANTERIOR",
-          "LATERAL DELTOID",
-        ],
-        keywords: [
-          "Dumbbell Shoulder Press Exercise",
-          "Seated Dumbbell Press Workout",
-          "Shoulder Strengthening Exercises",
-          "Dumbbell Exercises for Shoulders",
-          "Seated Shoulder Press Routine",
-          "Workout for Strong Shoulders",
-          "Upper Body Dumbbell Exercise",
-          "Seated Dumbbell Shoulder Press",
-          "Shoulder Muscle Building Exercise",
-          "Fitness Routine for Shoulder Press",
-        ],
-      },
-      {
-        exerciseId: "exr_41n2hsVHu7B1MTdr",
-        name: "Palms In Incline Bench Press",
-        imageUrl: "https://cdn.exercisedb.dev/media/w/images/DhC4s2apCJ.jpg",
-        bodyParts: ["UPPER ARMS"],
-        equipments: ["DUMBBELL"],
-        exerciseType: "STRENGTH",
-        targetMuscles: ["TRICEPS BRACHII"],
-        secondaryMuscles: [
-          "BRACHIORADIALIS",
-          "ADDUCTOR BREVIS",
-          "ANTERIOR DELTOID",
-          "BRACHIALIS",
-          "PECTORALIS MAJOR CLAVICULAR HEAD",
-          "BICEPS BRACHII",
-          "ADDUCTOR MAGNUS",
-        ],
-        keywords: [
-          "Dumbbell Incline Bench Press",
-          "Upper Arm Workouts",
-          "Dumbbell Exercise for Arms",
-          "Incline Bench Press with Palms In",
-          "Gym Exercise for Upper Arms",
-          "Strength Training for Arms",
-          "Palms In Dumbbell Press",
-          "Incline Bench Dumbbell Workout",
-          "Arm Toning Exercises",
-          "Fitness Routine for Upper Arms",
-        ],
-      },
-    ],
-  };
   const router = useRouter();
 
   const { appendExercise } = useActiveWorkoutForm();
@@ -299,6 +24,18 @@ export default function ExerciseLibraryScreen() {
     exerciseFiltersReducer,
     initialExerciseFilters,
   );
+  const {
+    data,
+    isPending,
+    isError,
+    error,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useExerciseSearch(filters);
+
+  const exercises = data?.pages.flatMap((page) => page.data) ?? [];
 
   const debouncedSearchTerm = useDebounce({
     value: searchTerm,
@@ -313,10 +50,6 @@ export default function ExerciseLibraryScreen() {
       search: normelizedSearchTerm,
     });
   }, [debouncedSearchTerm]);
-
-  // useEffect(() => {
-  //   console.log("API search filters", filters);
-  // }, [filters]);
 
   function addExercise(exercise: { exerciseId: string; name: string }) {
     appendExercise({
@@ -344,6 +77,43 @@ export default function ExerciseLibraryScreen() {
         <FilterRow selectedBodyParts={filters.bodyParts} dispatch={dispatch} />
 
         <View className="gap-4">
+          {isPending ? (
+            <Text>Loading exercises...</Text>
+          ) : isError ? (
+            <Text>Failed to load exercises: {error.message}</Text>
+          ) : exercises.length === 0 ? (
+            <Text>No exercises found.</Text>
+          ) : (
+            exercises.map((e) => (
+              <ExerciseResultItem
+                key={e.exerciseId}
+                id={e.exerciseId}
+                name={e.name}
+                imageUrl={e.imageUrl}
+                primaryMuscle={e.bodyParts[0]?.toLowerCase() ?? "unknown"}
+                equipment={e.equipments[0]?.toLowerCase() ?? "unknown"}
+                onAdd={() => addExercise(e)}
+              />
+            ))
+          )}
+
+          {hasNextPage ? (
+            <Button
+              disabled={isFetchingNextPage}
+              onPress={() => fetchNextPage()}
+            >
+              <Text>
+                {isFetchingNextPage ? "Loading more..." : "Load more"}
+              </Text>
+            </Button>
+          ) : null}
+
+          {isFetching && !isFetchingNextPage ? (
+            <Text>Refreshing...</Text>
+          ) : null}
+        </View>
+
+        {/* <View className="gap-4">
           {mockExercises.data.map((e) => (
             <ExerciseResultItem
               key={e.exerciseId}
@@ -357,7 +127,7 @@ export default function ExerciseLibraryScreen() {
               onAdd={() => addExercise(e)}
             />
           ))}
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );

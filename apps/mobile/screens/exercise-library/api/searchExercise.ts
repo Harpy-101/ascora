@@ -34,8 +34,9 @@ export default async function searchExercises(params: ExerciseSearchParams) {
     searchParams.set("limit", String(params.limit ?? 20));
   }
 
-  //  ! Add the backend url
-  const response = await fetch("");
+  const response = await fetch(
+    `${process.env.EXPO_PUBLIC_API_URL}/api/exercises?${searchParams.toString()}`,
+  );
 
   if (!response.ok) {
     throw new Error(`Failed to search exercises`);
