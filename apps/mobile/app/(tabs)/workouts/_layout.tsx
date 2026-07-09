@@ -11,6 +11,10 @@ export default function WorkoutsLayout() {
           name="ExerciseLibrary"
           options={{ title: "Exercise Library" }}
         />
+        <Stack.Screen
+          name="[exerciseId]"
+          options={{ title: "Exercise Details" }}
+        />
       </Stack>
     </ActiveWorkoutFormProvider>
   );

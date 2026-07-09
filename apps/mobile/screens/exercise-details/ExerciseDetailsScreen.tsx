@@ -1,0 +1,55 @@
+import { ScrollView, View } from "react-native";
+import ExerciseDetailsTabs from "./components/ExerciseDetailsTabs";
+import useExerciseDetails from "./hooks/use-exercise-details";
+import { Text } from "@/components/ui/text";
+import { Button } from "@/components/ui/button";
+import ExerciseDetailsHeader from "./components/ExerciseDetailsHeader";
+import { useActiveWorkoutForm } from "@/contexts/active-workout-form-context";
+import { useRouter } from "expo-router";
+
+export default function ExerciseDetailsScreen({
+  exerciseId,
+}: {
+  exerciseId: string;
+}) {
+  const router = useRouter();
+  const { appendExercise } = useActiveWorkoutForm();
+  const { data, refetch, isPending, isError, error } =
+    useExerciseDetails(exerciseId);
+
+  if (isPending) return <Text>Loading exercise detrails...</Text>;
+
+  if (isError) {
+    return (
+      <View>
+        <Text>Failed to load exercise</Text>
+        <Text className="text-sm text-muted-foreground">{error.message}</Text>
+        <Button onPress={() => refetch()}>
+          <Text>Try again</Text>
+        </Button>
+      </View>
+    );
+  }
+
+  // const exercise = mockExerciseDetails;
+  const exercise = data;
+
+  function addExercise(exercise: { exerciseId: string; name: string }) {
+    console.log("Prerssed");
+    appendExercise({
+      exerciseId: exercise.exerciseId,
+      name: exercise.name,
+    });
+    router.back();
+  }
+
+  return (
+    <ScrollView contentContainerClassName="px-2 gap-4">
+      <ExerciseDetailsHeader
+        {...exercise.data}
+        onAddToWorkout={() => addExercise({ ...exercise.data })}
+      />
+      <ExerciseDetailsTabs {...exercise.data} />
+    </ScrollView>
+  );
+}

@@ -93,6 +93,12 @@ export default function ExerciseLibraryScreen() {
                 primaryMuscle={e.bodyParts[0]?.toLowerCase() ?? "unknown"}
                 equipment={e.equipments[0]?.toLowerCase() ?? "unknown"}
                 onAdd={() => addExercise(e)}
+                onPress={() =>
+                  router.push({
+                    pathname: "/workouts/[exerciseId]",
+                    params: { exerciseId: e.exerciseId },
+                  })
+                }
               />
             ))
           )}
@@ -112,22 +118,6 @@ export default function ExerciseLibraryScreen() {
             <Text>Refreshing...</Text>
           ) : null}
         </View>
-
-        {/* <View className="gap-4">
-          {mockExercises.data.map((e) => (
-            <ExerciseResultItem
-              key={e.exerciseId}
-              id={e.exerciseId}
-              name={e.name}
-              imageUrl={e.imageUrl}
-              primaryMuscle={e.bodyParts[0].toLowerCase()}
-              equipment={e.equipments[0].toLowerCase()}
-              // category={e.targetMuscles}
-              //   onPress={() => router.push(`/workouts/exerciseLibrary/${exercise.id}`)}
-              onAdd={() => addExercise(e)}
-            />
-          ))}
-        </View> */}
       </ScrollView>
     </View>
   );
