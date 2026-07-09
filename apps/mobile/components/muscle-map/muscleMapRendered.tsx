@@ -89,7 +89,7 @@ export function NativeMuscleBody({
         ? "0 0 724 1448"
         : "580 0 724 1448"
       : side === "front"
-        ? "0 0 724 1448"
+        ? "-50 0 724 1448"
         : "580 0 724 1448";
 
   const userDataMap = new Map<Slug, ExtendedBodyPart>();
