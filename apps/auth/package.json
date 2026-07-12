@@ -1,0 +1,30 @@
+{
+  "name": "@ascora/auth",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@better-auth/expo": "^1.6.23",
+    "@hono/node-server": "^2.0.8",
+    "better-auth": "^1.6.23",
+    "dotenv": "^17.4.2",
+    "hono": "^4.12.29",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@types/pg": "^8.20.0",
+    "tsx": "^4.23.0",
+    "typescript": "^7.0.2"
+  }
+}
