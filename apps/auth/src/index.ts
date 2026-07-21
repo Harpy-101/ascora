@@ -6,6 +6,17 @@ import { auth } from "./auth";
 
 const app = new Hono();
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
+const trustedOrigins = [
+  "ascora://",
+  "ascora://*",
+
+  ...(isDevelopment
+    ? ["exp://", "exp://**", "exp://172.20.10.2:8081", "http://localhost:8081"]
+    : []),
+];
+
 app.use(
   "/api/auth/*",
   cors({
@@ -26,3 +37,11 @@ serve({
 });
 
 console.log("Better Auth running on http://localhost:3005");
+console.log("Better Auth startup configuration:", {
+  cwd: process.cwd(),
+  nodeEnv: process.env.NODE_ENV,
+  isDevelopment,
+  baseURL: process.env.BETTER_AUTH_URL,
+  apiAudience: process.env.ASCORA_API_AUDIENCE,
+  trustedOrigins,
+});
