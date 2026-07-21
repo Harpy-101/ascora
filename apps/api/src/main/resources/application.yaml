@@ -10,6 +10,18 @@ spring:
   flyway:
     enabled: true
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${BETTER_AUTH_ISSUER:http://172.20.10.2:3005}
+          jwk-set-uri: ${BETTER_AUTH_JWKS_URI:http://172.20.10.2:3005/api/auth/jwks}
+          audiences: ${ASCORA_API_AUDIENCE:http://172.20.10.2:8080}
+  logging:
+    level:
+      org.springframework.security: TRACE
+      org.springframework.security.oauth2: TRACE
+
 server:
   port: 8080
 
