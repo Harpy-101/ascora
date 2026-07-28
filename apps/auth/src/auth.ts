@@ -43,6 +43,12 @@ export const auth = betterAuth({
   plugins: [
     expo(),
     jwt({
+      jwks: {
+        keyPairConfig: {
+          alg: "RS256",
+          modulusLength: 2048,
+        },
+      },
       jwt: {
         issuer: process.env.BETTER_AUTH_URL,
         audience: process.env.ASCORA_API_AUDIENCE,
