@@ -34,7 +34,7 @@ export default function LoginScreen() {
     login.mutateAsync(values);
   }
 
-  const isSubmiting = "";
+  const isSubmiting = login.isPending;
 
   return (
     <KeyboardAvoidingView
@@ -119,6 +119,18 @@ export default function LoginScreen() {
               </FormField>
             )}
           />
+
+          <View className="items-start gap-4">
+            <View className="flex-row items-center gap-1">
+              <Text className="text-sm text-muted-foreground">
+                Forgot your password?
+              </Text>
+
+              <Pressable onPress={() => router.replace("/forgot-password")}>
+                <Text>Reset password</Text>
+              </Pressable>
+            </View>
+          </View>
 
           {form.formState.errors.root?.server ? (
             <View className="rounded-xl border border-destructive/30 bg-destructive/10 p-3">
