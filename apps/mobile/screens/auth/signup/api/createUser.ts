@@ -16,5 +16,9 @@ export default async function createUser(values: SignupFormValues) {
     );
   }
 
+  if (!data.user) {
+    throw new Error("The auth server didn't return a user");
+  }
+
   return data;
 }
