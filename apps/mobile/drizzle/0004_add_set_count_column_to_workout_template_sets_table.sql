@@ -1,0 +1,1 @@
+ALTER TABLE `workout_template_sets` ADD `set_count` integer;
