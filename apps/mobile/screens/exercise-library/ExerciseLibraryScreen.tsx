@@ -1,7 +1,6 @@
 import { ScrollView, View } from "react-native";
 import { ExerciseResultItem } from "./components/ExerciseIResulttem";
-import { useRouter } from "expo-router";
-import { useActiveWorkoutForm } from "@/contexts/active-workout-form-context";
+import { Href, useRouter } from "expo-router";
 import ExerciseSearchField from "./components/ExerciseSearchField";
 import { useEffect, useReducer, useState } from "react";
 import {
@@ -14,11 +13,23 @@ import FilterRow from "./components/FilterRow";
 import useExerciseSearch from "./hooks/use-exercise-search";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { ExerciseToAdd } from "@/contexts/workout-plan-form-context";
 
-export default function ExerciseLibraryScreen() {
+type ExerciseLibraryScreenProps = {
+  isAppendable: boolean;
+  getExerciseDetailsHref: (exerciseId: string) => Href;
+  appendExercise: (exercise: ExerciseToAdd) => void;
+};
+
+export default function ExerciseLibraryScreen({
+  appendExercise,
+  getExerciseDetailsHref,
+  isAppendable,
+}: ExerciseLibraryScreenProps) {
   const router = useRouter();
 
-  const { appendExercise } = useActiveWorkoutForm();
+  // const { appendExercise } = useActiveWorkoutForm();
+  // const { appendExercise } = useWorkoutPlanForm();
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, dispatch] = useReducer(
     exerciseFiltersReducer,
@@ -52,10 +63,12 @@ export default function ExerciseLibraryScreen() {
   }, [debouncedSearchTerm]);
 
   function addExercise(exercise: { exerciseId: string; name: string }) {
-    appendExercise({
-      exerciseId: exercise.exerciseId,
-      name: exercise.name,
-    });
+    if (isAppendable) {
+      appendExercise({
+        exerciseId: exercise.exerciseId,
+        name: exercise.name,
+      });
+    }
 
     router.back();
   }
@@ -93,12 +106,13 @@ export default function ExerciseLibraryScreen() {
                 primaryMuscle={e.bodyParts[0]?.toLowerCase() ?? "unknown"}
                 equipment={e.equipments[0]?.toLowerCase() ?? "unknown"}
                 onAdd={() => addExercise(e)}
-                onPress={() =>
-                  router.push({
-                    pathname: "/workouts/[exerciseId]",
-                    params: { exerciseId: e.exerciseId },
-                  })
-                }
+                onPress={() => {
+                  console.log(
+                    "exercise details href:",
+                    getExerciseDetailsHref(e.exerciseId),
+                  );
+                  router.push(getExerciseDetailsHref(e.exerciseId));
+                }}
               />
             ))
           )}
