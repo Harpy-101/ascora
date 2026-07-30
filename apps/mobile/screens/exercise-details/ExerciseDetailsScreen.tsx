@@ -4,16 +4,20 @@ import useExerciseDetails from "./hooks/use-exercise-details";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import ExerciseDetailsHeader from "./components/ExerciseDetailsHeader";
-import { useActiveWorkoutForm } from "@/contexts/active-workout-form-context";
 import { useRouter } from "expo-router";
+import { ExerciseToAdd } from "@/contexts/workout-plan-form-context";
 
 export default function ExerciseDetailsScreen({
   exerciseId,
+  isAppendable,
+  appendExercise,
 }: {
   exerciseId: string;
+  isAppendable: boolean;
+  appendExercise: (exerciseId: ExerciseToAdd) => void;
 }) {
   const router = useRouter();
-  const { appendExercise } = useActiveWorkoutForm();
+  // const { appendExercise } = useActiveWorkoutForm();
   const { data, refetch, isPending, isError, error } =
     useExerciseDetails(exerciseId);
 
@@ -36,11 +40,13 @@ export default function ExerciseDetailsScreen({
 
   function addExercise(exercise: { exerciseId: string; name: string }) {
     console.log("Prerssed");
-    appendExercise({
-      exerciseId: exercise.exerciseId,
-      name: exercise.name,
-    });
-    router.back();
+    if (isAppendable) {
+      appendExercise({
+        exerciseId: exercise.exerciseId,
+        name: exercise.name,
+      });
+      router.back();
+    }
   }
 
   return (
