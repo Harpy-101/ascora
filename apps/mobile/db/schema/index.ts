@@ -2,3 +2,6 @@ export * from "./localUsers";
 export * from "./workouts";
 export * from "./workoutExercises";
 export * from "./workoutSets";
+export * from "./workoutTemplates";
+export * from "./workoutTemplateExercises";
+export * from "./workoutTemplateSets";
