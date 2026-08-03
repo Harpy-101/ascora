@@ -1,0 +1,1 @@
+ALTER TABLE `workout_exercises` ADD `exercise_name` text DEFAULT 'Unknown exercise' NOT NULL;

@@ -9,6 +9,7 @@ export const workoutExercises = sqliteTable(
       .notNull()
       .references(() => workouts.id, { onDelete: "cascade" }),
     exerciseId: text("exercise_id").notNull(),
+    exerciseName: text("exercise_name").notNull().default("Unknown exercise"),
     position: integer("position").notNull(),
     createdAt: text("created_at").notNull(),
   },

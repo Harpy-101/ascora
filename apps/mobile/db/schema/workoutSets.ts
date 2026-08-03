@@ -15,8 +15,8 @@ export const workoutSets = sqliteTable(
       .notNull()
       .references(() => workoutExercises.id, { onDelete: "cascade" }),
     setNumber: integer("set_number").notNull(),
-    weightInKg: real("weight_in_kg").notNull(),
-    reps: integer("reps").notNull(),
+    weightInKg: real("weight_in_kg"),
+    reps: integer("reps"),
     completed: integer("completed", { mode: "boolean" })
       .notNull()
       .default(false),

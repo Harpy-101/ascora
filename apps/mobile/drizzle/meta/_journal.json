@@ -36,6 +36,20 @@
       "when": 1785414849983,
       "tag": "0004_add_set_count_column_to_workout_template_sets_table",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1785662650785,
+      "tag": "0005_add_exercise_name_column_to_workout_exercise_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1785670919251,
+      "tag": "0006_remove-non_null_restriction_to_support_saving_non_completed_workout_sets",
+      "breakpoints": true
     }
   ]
 }
