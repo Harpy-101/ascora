@@ -4,10 +4,16 @@ import { Text } from "@/components/ui/text";
 import ExerciseAccordion from "./excersise-accordion/ExerciseAccordion";
 import { useState } from "react";
 import ExerciseListitem from "./ExerciseListItem";
-import { useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
 import { useActiveWorkoutForm } from "@/contexts/active-workout-form-context";
 
-export default function ExerciseList() {
+type ExerciseListProps = {
+  getExerciseLibraryUrl: () => Href;
+};
+
+export default function ExerciseList({
+  getExerciseLibraryUrl,
+}: ExerciseListProps) {
   const router = useRouter();
   const { removeExercise, exerciseFields } = useActiveWorkoutForm();
 
@@ -43,7 +49,7 @@ export default function ExerciseList() {
         <Button
           variant="outline"
           size="sm"
-          onPress={() => router.push("./workouts/ExerciseLibrary")}
+          onPress={() => router.push(getExerciseLibraryUrl())}
         >
           <Text>+ Exercise</Text>
         </Button>
