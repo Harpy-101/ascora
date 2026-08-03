@@ -30,15 +30,17 @@ const ActiveWorkoutContext =
 
 export function ActiveWorkoutFormProvider({
   children,
+  formValues,
 }: {
   children: ReactNode;
+  formValues?: WorkoutFormValues;
 }) {
   const form = useForm<WorkoutFormValues>({
     resolver: zodResolver(WorkoutFormSchema),
     defaultValues: {
-      name: "Deafalt name",
+      name: formValues?.name || "Deafalt name",
       notes: "",
-      exercises: [],
+      exercises: formValues?.exercises || [],
     },
     shouldFocusError: false,
   });
