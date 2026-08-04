@@ -143,9 +143,11 @@ export default function StartWorkoutScreen() {
       keyboardShouldPersistTaps="handled"
     >
       <View className="gap-1">
-        <Text variant="h1">Start workout</Text>
+        <Text variant="h1" className="text-start">
+          Start workout
+        </Text>
 
-        <Text className="leading-5 text-muted-foreground">
+        <Text className="leading-5 mt-2 text-muted-foreground">
           Begin with one of your saved plans or build a workout as you go.
         </Text>
       </View>
