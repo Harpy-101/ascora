@@ -81,9 +81,9 @@ export default function WorkoutsScreen() {
             </View>
           </View>
 
-          <View className="mt-4">
+          {/* <View className="mt-4">
             <ExerciseList />
-          </View>
+          </View> */}
 
           <Button onPress={handleSubmit(onSubmit, onInvalid)}>
             <Text>Finish Workout</Text>
