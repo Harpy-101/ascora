@@ -12,9 +12,10 @@ import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
 import { useFormContext } from "react-hook-form";
 import { NotebookPen } from "lucide-react-native";
 import ExerciseList from "../components/ExerciseList";
-import { Href } from "expo-router";
+import { Href, useRouter } from "expo-router";
 import AutosaveIndicator from "@/lib/auto-save/components/AutosaveIndicator";
 import useWorkoutAutoSave from "./hooks/use-workout-auto-save";
+import completeWorkout from "./db/completeWorkout";
 
 type ActiveWorkoutScreenProps = {
   workoutId: string;
@@ -25,18 +26,26 @@ export default function ActiveWorkoutScreen({
   getExerciseLibraryUrl,
   workoutId,
 }: ActiveWorkoutScreenProps) {
+  const router = useRouter();
   const form = useFormContext<WorkoutFormValues>();
   const { handleSubmit } = useFormContext<WorkoutFormValues>();
-  // const insertWorkout = useInsertWorkout();
 
   const autoSave = useWorkoutAutoSave({
     workoutId,
     form,
   });
 
-  function onSubmit(values: WorkoutFormValues) {
+  async function onSubmit(values: WorkoutFormValues) {
     console.log("form values", values);
-    // insertWorkout.mutate(values);
+    autoSave.pause();
+    try {
+      await autoSave.settleForFinalSave();
+      await completeWorkout({ workoutId, values });
+      router.back();
+    } catch (error) {
+      autoSave.resume();
+      throw new Error(`Error while trying to complete workout: ${error}`);
+    }
   }
 
   function onInvalid(errors: unknown) {
