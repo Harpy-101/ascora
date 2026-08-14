@@ -2,10 +2,12 @@ import { db } from "@/db/client";
 import { workoutExercises, workouts, workoutSets } from "@/db/schema";
 import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
 import { and, eq, inArray } from "drizzle-orm";
+import markAggregateForSync from "./markAggregateForSync";
 
 type SaveActiveWorkoutParams = {
   workoutId: string;
   values: WorkoutFormValues;
+  intent?: "save" | "complete";
 };
 
 function toNullableNumber(value: string): number | null {
@@ -43,6 +45,7 @@ function toNullableInteger(value: string): number | null {
 export default async function saveActiveWorkout({
   workoutId,
   values,
+  intent,
 }: SaveActiveWorkoutParams): Promise<void> {
   const nowIso = new Date().toISOString();
   await db.transaction(async (tx) => {
@@ -53,6 +56,8 @@ export default async function saveActiveWorkout({
       .select({
         id: workouts.id,
         status: workouts.status,
+        userId: workouts.userId,
+        serverVersion: workouts.serverVersion,
       })
       .from(workouts)
       .where(eq(workouts.id, workoutId))
@@ -64,6 +69,14 @@ export default async function saveActiveWorkout({
 
     if (workout.status !== "active") {
       throw new Error("Only active workouts can be saved");
+    }
+
+    if (intent === "save" && workout.status !== "active") {
+      return;
+    }
+
+    if (intent === "complete" && workout.status !== "active") {
+      throw new Error("Only an active workout can be completed");
     }
 
     /*
@@ -116,6 +129,12 @@ export default async function saveActiveWorkout({
         name: values.name,
         // notes: values.notes ?? null,
         updatedAt: new Date().toISOString(),
+        ...(intent === "complete"
+          ? {
+              status: "completed",
+              endedAt: nowIso,
+            }
+          : {}),
       })
       .where(and(eq(workouts.id, workoutId), eq(workouts.status, "active")));
 
@@ -231,5 +250,14 @@ export default async function saveActiveWorkout({
           ),
         );
     }
+
+    await markAggregateForSync(tx, {
+      userId: workout.userId,
+      aggregateType: "workout",
+      aggregateId: workoutId,
+      operation: "upsert",
+      baseServerVersion: workout.serverVersion,
+      nowIso,
+    });
   });
 }
