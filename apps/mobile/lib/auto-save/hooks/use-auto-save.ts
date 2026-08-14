@@ -68,15 +68,27 @@ export default function useAutoSave<TValues extends FieldValues>({
 
   const enabledRef = useRef(enabled);
 
+  // useEffect(() => {
+  //   enabledRef.current = enabled;
+
+  //   if (!enabled) {
+  //     setStatus("paused");
+  //   } else if (status === "paused") {
+  //     setStatus("idle");
+  //   }
+  // }, [enabled, status]);
+
   useEffect(() => {
     enabledRef.current = enabled;
 
     if (!enabled) {
       setStatus("paused");
-    } else if (status === "paused") {
-      setStatus("idle");
+    } else {
+      setStatus((currentStatus) =>
+        currentStatus === "paused" ? "idle" : currentStatus,
+      );
     }
-  }, [enabled, status]);
+  }, [enabled]);
 
   const clearDebounce = useCallback(() => {
     if (timeoutRef.current) {
@@ -224,6 +236,16 @@ export default function useAutoSave<TValues extends FieldValues>({
     }
   }, []);
 
+  const settleForFinalSave = useCallback(async () => {
+    clearDebounce();
+    pendingRef.current = null;
+    const runningSave = drainPromiseRef.current;
+
+    if (runningSave) {
+      await runningSave;
+    }
+  }, [clearDebounce]);
+
   useEffect(() => {
     if (!enabled || !isDirty) {
       return;
@@ -260,5 +282,6 @@ export default function useAutoSave<TValues extends FieldValues>({
     retry,
     pause,
     resume,
+    settleForFinalSave,
   };
 }
