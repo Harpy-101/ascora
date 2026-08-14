@@ -19,11 +19,7 @@ export default function QuickStartCard({
     <View className="gap-5 rounded-2xl border border-border bg-card p-4">
       <View className="flex-row items-start gap-4">
         <View className="h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-          <ThemedIcon
-            icon={Dumbbell}
-            size={23}
-            colorToken="primaryForeground"
-          />
+          <ThemedIcon icon={Dumbbell} size={23} colorToken="primary" />
         </View>
 
         <View className="flex-1 gap-1">

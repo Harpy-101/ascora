@@ -241,7 +241,7 @@ function EmptyPlansCard({ onBrowse }: { onBrowse: () => void }) {
   return (
     <View className="items-center gap-4 rounded-2xl border border-dashed border-border bg-muted/20 px-6 py-8">
       <View className="h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-        <Dumbbell size={25} className="text-primary" />
+        <ThemedIcon icon={Dumbbell} size={25} colorToken="primary" />
       </View>
 
       <View className="items-center gap-1">
