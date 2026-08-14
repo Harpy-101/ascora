@@ -50,6 +50,13 @@
       "when": 1785670919251,
       "tag": "0006_remove-non_null_restriction_to_support_saving_non_completed_workout_sets",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1786285689628,
+      "tag": "0007_add_sync_tables_and_workouts_andworkouts_pans_refactor",
+      "breakpoints": true
     }
   ]
 }

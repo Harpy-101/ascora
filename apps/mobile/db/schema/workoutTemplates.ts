@@ -1,4 +1,4 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { localUsers } from "./localUsers";
 
 export const workoutTemplates = sqliteTable("workout_templates", {
@@ -10,4 +10,5 @@ export const workoutTemplates = sqliteTable("workout_templates", {
   description: text("description"),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
+  serverVersion: integer("server_version"),
 });

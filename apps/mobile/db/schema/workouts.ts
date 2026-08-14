@@ -1,4 +1,4 @@
-import { index, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { localUsers } from "./localUsers";
 
 export const workouts = sqliteTable(
@@ -21,6 +21,7 @@ export const workouts = sqliteTable(
     createdAt: text("created_at").notNull(),
     updatedAt: text("updated_at").notNull(),
     deletedAt: text("deleted_at"),
+    serverVersion: integer("server_version"),
   },
   (table) => [
     index("workouts_user_id_idx").on(table.userId),
