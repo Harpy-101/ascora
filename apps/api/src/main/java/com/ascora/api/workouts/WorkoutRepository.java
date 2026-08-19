@@ -257,18 +257,18 @@ public class WorkoutRepository {
     }
     
     private void replaceWorkoutChildren(
-    Workout workout
-) {
-    jdbc.update(
-        """
-        DELETE FROM workout_exercises
-        WHERE workout_id = ?
-        """,
-        workout.id()
-    );
+        Workout workout
+    ) {
+        jdbc.update(
+            """
+            DELETE FROM workout_exercises
+            WHERE workout_id = ?
+            """,
+            workout.id()
+        );
 
-    insertExercises(workout);
-}
+        insertExercises(workout);
+    }
 
     public OptionalLong delete(
         UUID workoutId,
@@ -298,5 +298,117 @@ public class WorkoutRepository {
         return OptionalLong.of(
             versions.get(0)
         );
+    }
+
+    public Optional<Workout> findById(UUID workoutId) {
+        var result =  jdbc.query(
+            """
+            SELECT 
+                id,
+                user_id,
+                name,
+                status,
+                server_version, 
+                started_at,
+                completed_at
+            FROM workouts
+            WHERE id = ?                
+            """,
+            (rs, rowNum) -> new Workout(
+                rs.getObject("id", UUID.class),
+                rs.getObject("user_id", UUID.class),
+                rs.getString("name"),
+                rs.getString("status"),
+
+                rs.getObject(
+                    "started_at",
+                    OffsetDateTime.class
+                ),
+
+                rs.getObject(
+                    "completed_at",
+                    OffsetDateTime.class
+                ),
+                rs.getLong("server_version"),
+                List.of()
+            ),
+            workoutId
+        );
+
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Workout base = result.get(0);
+
+        var exerciseRows = jdbc.query(
+            """
+            SELECT
+                id,
+                exercise_id,
+                exercise_name,
+                position
+            FROM workout_exercises
+            WHERE workout_id = ?
+            ORDER BY position
+            """,
+            (rs, rowNum) -> new WorkoutExercise(
+                rs.getObject("id", UUID.class),
+                rs.getString("exercise_id"),
+                rs.getString("exercise_name"),
+                rs.getInt("position"),
+                List.of()
+            ),
+            workoutId
+        );
+
+        var exercises = new ArrayList<WorkoutExercise>();
+
+        for (WorkoutExercise exercise : exerciseRows) {
+            var sets = jdbc.query(
+                """
+                SELECT
+                    id,
+                    set_number,
+                    weight_in_kg,
+                    reps,
+                    completed
+                FROM workout_sets
+                WHERE workout_exercise_id = ?
+                ORDER BY set_number
+                """,
+                (rs, rowNum) -> new WorkoutSet(
+                    rs.getObject("id", UUID.class),
+                    rs.getInt("set_number"),
+                    rs.getBigDecimal("weight_in_kg"),
+                    rs.getObject("reps", Integer.class),
+                    rs.getBoolean("completed")
+                ),
+                exercise.id()
+            );
+
+            exercises.add(
+                new WorkoutExercise(
+                    exercise.id(),
+                    exercise.exerciseId(),
+                    exercise.exerciseName(),
+                    exercise.position(),
+                    sets
+                )
+            );
+        }
+
+        Workout workout = new Workout(
+            base.id(),
+            base.userId(),
+            base.name(),
+            base.status(),
+            base.startedAt(), 
+            base.completedAt(),
+            base.serverVersion(),
+            exercises
+        );
+
+        return Optional.of(workout);
     }
 }
