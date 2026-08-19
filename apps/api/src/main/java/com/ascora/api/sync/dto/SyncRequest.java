@@ -8,14 +8,8 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record SyncRequest(
-
     @NotBlank
     String deviceId,
-
-    /*
-     * Null means:
-     * "This device has never pulled server changes."
-     */
     String cursor,
 
     @NotNull
