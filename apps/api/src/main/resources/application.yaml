@@ -22,6 +22,16 @@ spring:
       org.springframework.security: TRACE
       org.springframework.security.oauth2: TRACE
 
+  spring:
+    artemis:
+      mode: embedded
+      embedded:
+        enabled: true
+        persistent: true
+        data-directory: ./data/artemis
+        queues:
+          - workout.analysis
+
 server:
   port: 8080
 
