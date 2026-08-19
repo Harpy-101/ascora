@@ -84,6 +84,11 @@ public class SyncService {
                 throw new UnsupportedOperationException(
                     "Workout plan sync is not implemented yet."
                 );
+            
+            case INSIGHT -> 
+                throw new UnsupportedOperationException(
+                    "Insight sync is not implemented yet"
+                );
         };
     }
 }
