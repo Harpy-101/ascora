@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ascora.api.jobs.outbox.JobOutboxService;
 import com.ascora.api.sync.domain.AggregateType;
 import com.ascora.api.sync.domain.MutationStatus;
 import com.ascora.api.sync.dto.MutationAcknowledgement;
@@ -18,30 +19,21 @@ import com.ascora.api.workouts.WorkoutExercise;
 import com.ascora.api.workouts.WorkoutRepository;
 import com.ascora.api.workouts.WorkoutSet;
 
+import lombok.RequiredArgsConstructor;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import java.util.OptionalLong;
 
 
 @Service
+@RequiredArgsConstructor
 public class WorkoutSyncApplier {
 
     private final WorkoutRepository workoutRepository;
     private final SyncChangeRepository syncChangeRepository;
     private final ObjectMapper objectMapper;
     private final ProcessedMutationRepository processedMutationRepository;
-
-    public WorkoutSyncApplier(
-        WorkoutRepository workoutRepository,
-        SyncChangeRepository syncChangeRepository,
-        ObjectMapper objectMapper,
-        ProcessedMutationRepository processedMutationRepository
-    ) {
-        this.workoutRepository = workoutRepository;
-        this.syncChangeRepository = syncChangeRepository;
-        this.processedMutationRepository = processedMutationRepository;
-        this.objectMapper = objectMapper;
-    }
+    private final JobOutboxService jobOutboxService;
 
     @Transactional
     public MutationAcknowledgement apply(
@@ -150,6 +142,7 @@ public class WorkoutSyncApplier {
             mutation,
             payload
         );
+
     }
     
     private MutationAcknowledgement insertWorkout(
@@ -204,6 +197,24 @@ public class WorkoutSyncApplier {
             mutation,
             serverVersion
         ); 
+
+        boolean becameCompleted = existing.map(w -> 
+            !w.status().equals("completed")
+            &&
+            payload.status().equals("completed")
+        )
+        .orElse(
+            payload.status().equals("completed")
+        );
+
+        if (becameCompleted) {
+            jobOutboxService.enqueueWorkoutAnalysis(
+                userId,
+                mutation.aggregateId(), 
+                mutation.mutationId(), 
+                serverVersion
+            );
+        }
         
         return acknowledgement;
     }
@@ -214,7 +225,20 @@ public class WorkoutSyncApplier {
         SyncMutation mutation,
         WorkoutSyncPayload payload
     ) {
-        long expectedVersion = mutation.baseServerVersion(); 
+        long expectedVersion = mutation.baseServerVersion();
+        
+        var existing =
+        workoutRepository.findByIdAndUserId(
+           mutation.aggregateId(),
+           userId
+        );
+        
+        if (existing.isEmpty()) {
+            return conflict(
+                mutation,
+                existing.get().serverVersion()
+            );
+        }
 
         Workout workout =
             toWorkout(
@@ -267,6 +291,23 @@ public class WorkoutSyncApplier {
                 serverVersion
             );
 
+        boolean becameCompleted = existing.map(w -> 
+            !w.status().equals("completed")
+            &&
+            payload.status().equals("completed")
+            )
+            .orElse(
+                payload.status().equals("completed")
+            );
+
+        if (becameCompleted) {
+            jobOutboxService.enqueueWorkoutAnalysis(
+                userId,
+                mutation.aggregateId(), 
+                mutation.mutationId(), 
+                serverVersion
+            );
+        }
         return acknowledgement;
     }
 
