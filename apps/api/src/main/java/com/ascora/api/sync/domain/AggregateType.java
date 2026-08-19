@@ -8,5 +8,8 @@ public enum AggregateType {
     WORKOUT,
 
     @JsonProperty("workout_plan")
-    WORKOUT_PLAN
+    WORKOUT_PLAN,
+
+    @JsonProperty("insight")
+    INSIGHT
 }
