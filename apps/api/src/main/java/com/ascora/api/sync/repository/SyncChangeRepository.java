@@ -150,6 +150,7 @@ public class SyncChangeRepository {
         return switch (type) {
             case WORKOUT -> "workout";
             case WORKOUT_PLAN -> "workout_plan";
+            case INSIGHT -> "insight";
         };
     }
 
@@ -237,6 +238,9 @@ public class SyncChangeRepository {
             case "workout_plan" ->
                 AggregateType.WORKOUT_PLAN;
 
+            case "insight" -> 
+                AggregateType.INSIGHT;
+
             default ->
                 throw new IllegalStateException(
                     "Unknown aggregate type: "
@@ -291,5 +295,23 @@ public class SyncChangeRepository {
         }
 
         return sequence;
+    }
+
+    public long insertServerGeneratedUpsert(
+        UUID userId,
+        UUID aggregateId,
+        AggregateType aggregateType,
+        long serverVersion,
+        JsonNode payload
+    ) {
+        return insertUpsert(
+            userId,
+            aggregateId,
+            aggregateType,
+            serverVersion,
+            null,
+            null,
+            payload
+        );
     }
 }
