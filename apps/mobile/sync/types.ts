@@ -1,6 +1,6 @@
 import { db } from "@/db/client";
 
-export type AggregateType = "workout" | "workout_plan";
+export type AggregateType = "workout" | "workout_plan" | "insight";
 
 export type SyncOperation = "upsert" | "delete";
 

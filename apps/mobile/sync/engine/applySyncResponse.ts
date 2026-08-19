@@ -3,6 +3,7 @@ import { PreparedSyncBatch, SyncResponse } from "../types";
 import applySuccessfulAck from "./applySuccessfulAck";
 import applyWorkoutServerChange from "./applyWorkoutServerChange";
 import { syncState } from "@/db/schema";
+import applyInsightServerChange from "./applyInsightServerChange";
 
 export default async function applySyncResponse(
   userId: string,
@@ -50,7 +51,12 @@ export default async function applySyncResponse(
           break;
 
         case "workout_plan":
+          result = "conflict";
           throw new Error("Workout plan inbound sync is not implemented");
+
+        case "insight":
+          result = await applyInsightServerChange(tx, change, userId);
+          break;
       }
 
       if (result === "conflict") {

@@ -12,6 +12,9 @@ export default async function ruinSync(userId: string): Promise<void> {
 
     const result = await applySyncResponse(userId, prepared, response);
 
+    // console.log("Blocked by conflict = ", result.blockedByConflict);
+    // console.log("chnages", response.changes);
+
     if (result.blockedByConflict) {
       return;
     }
