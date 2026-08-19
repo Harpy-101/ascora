@@ -7,3 +7,4 @@ export * from "./workoutTemplateExercises";
 export * from "./workoutTemplateSets";
 export * from "./syncOutbox";
 export * from "./syncState";
+export * from "./insights";

@@ -9,6 +9,7 @@ import m0004 from './0004_add_set_count_column_to_workout_template_sets_table.sq
 import m0005 from './0005_add_exercise_name_column_to_workout_exercise_table.sql';
 import m0006 from './0006_remove-non_null_restriction_to_support_saving_non_completed_workout_sets.sql';
 import m0007 from './0007_add_sync_tables_and_workouts_andworkouts_pans_refactor.sql';
+import m0008 from './0008_insight-table.sql';
 
   export default {
     journal,
@@ -20,7 +21,8 @@ m0003,
 m0004,
 m0005,
 m0006,
-m0007
+m0007,
+m0008
     }
   }
   
