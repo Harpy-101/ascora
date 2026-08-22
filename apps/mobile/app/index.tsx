@@ -41,6 +41,11 @@ export default function HomeScreen() {
           <Text>WEokrout start screen</Text>
         </Button>
       </Link>
+      <Link href="/weight" asChild>
+        <Button>
+          <Text>Weight entry screen</Text>
+        </Button>
+      </Link>
       <Button onPress={() => requestSync(user.id)}>
         <Text>request sync</Text>
       </Button>
