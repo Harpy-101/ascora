@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import ThemedIcon from "@/components/ui/themed-icon";
 
 import { useRouter } from "expo-router";
-import { Plus, Weight } from "lucide-react-native";
+import { CirclePlus, Plus, Weight } from "lucide-react-native";
 import WeightChart from "./components/WeightChart";
 import ScreenErrorState from "@/components/screen-states/ScreenErrorState";
 import ScreenLoadingState from "@/components/screen-states/ScreenLoadingStates";
 import ScreenEmptyState from "@/components/screen-states/ScreenEmptyState";
 import WeightHistoryRow from "./components/WeightHistoryRow";
 import useWeightHistory from "./hooks/use-weight-history";
+import ScreenHeader from "@/components/ui/screen-header";
 
 export default function UserWeightScreen() {
   const {
@@ -40,23 +41,24 @@ export default function UserWeightScreen() {
           ItemSeparatorComponent={() => <View className="h-px bg-border" />}
           ListHeaderComponent={
             <View className="gap-4">
-              <View>
-                <View className="flex-row justify-between">
-                  <Text variant="h1">Weight</Text>
-
+              <ScreenHeader
+                title="Weight"
+                subtitle="Track your progress over time"
+                rightAction={
                   <Button
-                    variant="outline"
                     size="icon"
+                    variant="ghost"
                     onPress={() => router.push("/weight/new")}
+                    hitSlop={10}
                   >
-                    <ThemedIcon icon={Plus} size={18} colorToken="foreground" />
+                    <ThemedIcon
+                      icon={CirclePlus}
+                      size={24}
+                      colorToken="primary"
+                    />
                   </Button>
-                </View>
-                <Text className="mt-2 text-muted-foreground">
-                  Track your progress over time
-                </Text>
-              </View>
-
+                }
+              />
               <View className="mb-2">
                 <View className="mb-3 flex-row items-center justify-between">
                   <Text variant="h3">Proggression</Text>

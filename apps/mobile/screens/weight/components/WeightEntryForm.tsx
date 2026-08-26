@@ -19,7 +19,7 @@ import {
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import ThemedIcon from "@/components/ui/themed-icon";
-import { CalendarDays, Check, ChevronRight } from "lucide-react-native";
+import { CalendarDays, ChevronRight, CircleCheck } from "lucide-react-native";
 import FormField from "@/screens/auth/components/FormField";
 import { Input } from "@/components/ui/input";
 import DateTimePicker, {
@@ -27,6 +27,7 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { WeightEntry } from "../types";
 import useUpdateWeightEntry from "../hooks/use-update-weight-entry";
+import ScreenHeader from "@/components/ui/screen-header";
 
 type WeightEntryFormProps = {
   entry?: WeightEntry;
@@ -76,21 +77,20 @@ export default function WeightEntryForm({
           gap: 16,
         }}
       >
-        <View className="w-full flex-row items-center justify-between">
-          <Text variant="h1">Weight</Text>
-
-          <Button onPress={form.handleSubmit(onSubmit)}>
-            {entry ? (
-              <Text>Save</Text>
-            ) : (
-              <ThemedIcon
-                icon={Check}
-                size={18}
-                colorToken="primaryForeground"
-              />
-            )}
-          </Button>
-        </View>
+        <ScreenHeader
+          title={entry ? "Update Entry" : "Add Entry"}
+          showBack
+          rightAction={
+            <Button
+              onPress={() => form.handleSubmit(onSubmit)}
+              size="icon"
+              variant="ghost"
+              hitSlop={10}
+            >
+              <ThemedIcon icon={CircleCheck} colorToken="primary" size={24} />
+            </Button>
+          }
+        />
 
         <Controller
           name="weightInKg"
