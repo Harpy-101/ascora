@@ -23,6 +23,8 @@
     "@rn-primitives/dropdown-menu": "^1.4.0",
     "@rn-primitives/popover": "^1.4.0",
     "@rn-primitives/portal": "^1.4.0",
+    "@rn-primitives/progress": "^1.5.2",
+    "@rn-primitives/radio-group": "^1.5.2",
     "@rn-primitives/select": "^1.5.2",
     "@rn-primitives/slot": "^1.5.2",
     "@rn-primitives/tabs": "^1.4.0",
