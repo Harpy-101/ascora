@@ -9,3 +9,4 @@ export * from "./syncOutbox";
 export * from "./syncState";
 export * from "./insights";
 export * from "./weightEntries";
+export * from "./goals";
