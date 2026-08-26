@@ -46,6 +46,11 @@ export default function HomeScreen() {
           <Text>Weight entry screen</Text>
         </Button>
       </Link>
+      <Link href="/goals" asChild>
+        <Button>
+          <Text>Goals</Text>
+        </Button>
+      </Link>
       <Button onPress={() => requestSync(user.id)}>
         <Text>request sync</Text>
       </Button>
