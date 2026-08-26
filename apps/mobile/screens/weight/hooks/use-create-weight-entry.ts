@@ -22,6 +22,7 @@ export default function useCreateWeightEntry() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["weight-history", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["user-goals", user?.id] });
       router.back();
     },
   });

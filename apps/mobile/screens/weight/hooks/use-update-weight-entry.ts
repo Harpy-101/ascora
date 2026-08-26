@@ -28,6 +28,7 @@ export default function useUpdateWeightEntry() {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["weight-history", user.id] });
+      queryClient.invalidateQueries({ queryKey: ["user-goals", user?.id] });
       router.back();
     },
   });
