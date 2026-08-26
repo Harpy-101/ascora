@@ -1,5 +1,4 @@
 import { FlatList, Pressable, View } from "react-native";
-
 import useGoals from "./hooks/use-goals";
 import ScreenLoadingState from "@/components/screen-states/ScreenLoadingStates";
 import ScreenErrorState from "@/components/screen-states/ScreenErrorState";
@@ -7,7 +6,7 @@ import ScreenHeader from "@/components/ui/screen-header";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import ThemedIcon from "@/components/ui/themed-icon";
-import { Goal, Plus } from "lucide-react-native";
+import { CirclePlus, Goal, Plus } from "lucide-react-native";
 import ScreenEmptyState from "@/components/screen-states/ScreenEmptyState";
 import { GoalProgressCard } from "./components/GoalProgressCard";
 import convertToDate from "./validation/helpers/convertToDate";
@@ -40,12 +39,13 @@ export default function GoalsScreen() {
         <ScreenHeader
           title="Goals"
           rightAction={
-            <Button size="icon" onPress={() => router.push("/goals/new")}>
-              <ThemedIcon
-                icon={Plus}
-                colorToken="primaryForeground"
-                size={18}
-              />
+            <Button
+              size="icon"
+              variant="ghost"
+              onPress={() => router.push("/goals/new")}
+              hitSlop={10}
+            >
+              <ThemedIcon icon={CirclePlus} colorToken="primary" size={24} />
             </Button>
           }
         />
