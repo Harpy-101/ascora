@@ -10,12 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
 import { useFormContext } from "react-hook-form";
-import { NotebookPen } from "lucide-react-native";
+// import { NotebookPen } from "lucide-react-native";
 import ExerciseList from "../components/ExerciseList";
 import { Href, useRouter } from "expo-router";
 import AutosaveIndicator from "@/lib/auto-save/components/AutosaveIndicator";
 import useWorkoutAutoSave from "./hooks/use-workout-auto-save";
 import completeWorkout from "./db/completeWorkout";
+import prepareWorkoutForSave from "./functions/prepareWorkoutForSave";
+import { usePreferences } from "@/contexts/user-prefrences-context";
+import { useQueryClient } from "@tanstack/react-query";
 
 type ActiveWorkoutScreenProps = {
   workoutId: string;
@@ -26,9 +29,11 @@ export default function ActiveWorkoutScreen({
   getExerciseLibraryUrl,
   workoutId,
 }: ActiveWorkoutScreenProps) {
+  const { weightUnit } = usePreferences();
   const router = useRouter();
   const form = useFormContext<WorkoutFormValues>();
   const { handleSubmit } = useFormContext<WorkoutFormValues>();
+  const queryClient = useQueryClient();
 
   const autoSave = useWorkoutAutoSave({
     workoutId,
@@ -40,7 +45,9 @@ export default function ActiveWorkoutScreen({
     autoSave.pause();
     try {
       await autoSave.settleForFinalSave();
-      await completeWorkout({ workoutId, values });
+      const normolizedValues = prepareWorkoutForSave(values, weightUnit);
+      await completeWorkout({ workoutId, values: normolizedValues });
+      await queryClient.invalidateQueries({ queryKey: ["active-workout"] });
       router.back();
     } catch (error) {
       autoSave.resume();
@@ -70,12 +77,12 @@ export default function ActiveWorkoutScreen({
               void autoSave.retry();
             }}
           />
-          <View className="flex-row justify-between">
+          {/* <View className="flex-row justify-between">
             <Text variant="h1">Workouts</Text>
             <Button variant="outline" size="icon">
               <NotebookPen size={18} color="white" />
             </Button>
-          </View>
+          </View> */}
 
           <View className="gap-2">
             <View className="flex-row justify-between">

@@ -14,3 +14,7 @@ export default function useGetCurrentWorkoutById(workoutId: string) {
     enabled: !!workoutId,
   });
 }
+
+export type CurrentWorkoutData = ReturnType<
+  typeof useGetCurrentWorkoutById
+>["data"];

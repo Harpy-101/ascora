@@ -1,9 +1,10 @@
-import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
+// import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
 import saveActiveWorkout from "./saveActiveWorkout";
+import { WorkoutSaveValues } from "../types";
 
 type CompleteWorkoutValues = {
   workoutId: string;
-  values: WorkoutFormValues;
+  values: WorkoutSaveValues;
 };
 
 export default async function completeWorkout({

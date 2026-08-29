@@ -1,46 +1,14 @@
 import { db } from "@/db/client";
 import { workoutExercises, workouts, workoutSets } from "@/db/schema";
-import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
 import { and, eq, inArray } from "drizzle-orm";
 import markAggregateForSync from "./markAggregateForSync";
+import { WorkoutSaveValues } from "../types";
 
 type SaveActiveWorkoutParams = {
   workoutId: string;
-  values: WorkoutFormValues;
+  values: WorkoutSaveValues;
   intent?: "save" | "complete";
 };
-
-function toNullableNumber(value: string): number | null {
-  const normalized = value.trim();
-
-  if (normalized === "") {
-    return null;
-  }
-
-  const parsed = Number(normalized);
-
-  if (!Number.isFinite(parsed)) {
-    return null;
-  }
-
-  return parsed;
-}
-
-function toNullableInteger(value: string): number | null {
-  const normalized = value.trim();
-
-  if (normalized === "") {
-    return null;
-  }
-
-  const parsed = Number(normalized);
-
-  if (!Number.isInteger(parsed)) {
-    return null;
-  }
-
-  return parsed;
-}
 
 export default async function saveActiveWorkout({
   workoutId,
@@ -187,8 +155,10 @@ export default async function saveActiveWorkout({
         const setValues = {
           workoutExerciseId: exercise.id,
           setNumber: setIndex + 1,
-          weightInKg: toNullableNumber(set.weight),
-          reps: toNullableInteger(set.reps),
+          weightInKg: set.weightKg,
+          reps: set.reps,
+          // weightInKg: toNullableNumber(set.weightKg),
+          // reps: toNullableInteger(set.reps),
           completed: set.completed,
           createdAt: nowIso,
         };

@@ -5,6 +5,9 @@ import saveActiveWorkout from "../db/saveActiveWorkout";
 import useAutoSave from "@/lib/auto-save/hooks/use-auto-save";
 import { requestSync } from "@/sync/coordinator/syncCoordinator";
 import { useCurrentUser } from "@/lib/auth/context/current-user-context";
+import prepareWorkoutForSave from "../functions/prepareWorkoutForSave";
+import { usePreferences } from "@/contexts/user-prefrences-context";
+import { WorkoutSaveValues } from "../types";
 
 type UseWorkoutAutoSaveOptions = {
   workoutId: string;
@@ -15,9 +18,10 @@ export default function useWorkoutAutoSave({
   workoutId,
   form,
 }: UseWorkoutAutoSaveOptions) {
+  const { weightUnit } = usePreferences();
   const { user } = useCurrentUser();
   const saveMutation = useMutation({
-    mutationFn: async (values: WorkoutFormValues) => {
+    mutationFn: async (values: WorkoutSaveValues) => {
       await saveActiveWorkout({ workoutId, values });
     },
     scope: { id: `workout-autosave:${workoutId}` },
@@ -30,7 +34,8 @@ export default function useWorkoutAutoSave({
   return useAutoSave({
     form,
     save: async (values) => {
-      await saveMutation.mutateAsync(values);
+      const preparedValues = prepareWorkoutForSave(values, weightUnit);
+      await saveMutation.mutateAsync(preparedValues);
       if (!user?.id) {
         throw new Error("User must be logged in in order to sync data");
       }
