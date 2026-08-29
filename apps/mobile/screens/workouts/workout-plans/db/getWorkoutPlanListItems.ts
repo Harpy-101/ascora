@@ -90,7 +90,6 @@ export default async function getWorkoutPlanListItems(
     .where(eq(workoutTemplates.ownerId, userId))
     .orderBy(desc(workoutTemplates.updatedAt));
 
-  console.log("rows res", rows);
   return rows.map(({ exerciseNamesJson, ...plan }) => ({
     ...plan,
     exerciseNames: parseExerciseNames(exerciseNamesJson),
