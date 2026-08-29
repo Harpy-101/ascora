@@ -32,15 +32,12 @@ export default function StartWorkoutScreen() {
   } = useGetAllWorkoutPlans();
 
   const startWorkout = useStartWorkout();
-
   const recentPlans = plans.slice(0, 3);
-
   const isPending = isActiveWorkoutPending || isLoadingPlans;
-
   const queryError = activeWorkoutError ?? plansError;
 
   function openActiveWorkout(workoutId: string) {
-    router.replace({
+    router.push({
       pathname: "/workouts/active/[workoutId]",
       params: {
         workoutId,
@@ -139,7 +136,7 @@ export default function StartWorkoutScreen() {
   return (
     <ScrollView
       className="flex-1"
-      contentContainerClassName="gap-7 px-4 pt-4"
+      contentContainerClassName="gap-7 px-4 py-4"
       keyboardShouldPersistTaps="handled"
     >
       <View className="gap-1">
