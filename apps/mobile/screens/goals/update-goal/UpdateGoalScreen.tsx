@@ -9,9 +9,10 @@ import ScreenHeader from "@/components/ui/screen-header";
 import useDeleteGoal from "../hooks/use-delete-goal";
 import { Trash2 } from "lucide-react-native";
 import DeletionWarningPopOver from "@/components/ui/deletetion-warning-pop-over";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 export default function UpdateGoalScreen({ goalId }: { goalId: string }) {
-  console.log("goalId", goalId);
+  const { weightToKg } = usePreferences();
   const { data, isLoading, error, isFetchedAfterMount, refetch } =
     useGetGoalById(goalId);
 
@@ -27,7 +28,13 @@ export default function UpdateGoalScreen({ goalId }: { goalId: string }) {
   }
 
   function onSubmit(values: GoalSchemaValues) {
-    updateGoal.mutate(values);
+    const startValueInKg = weightToKg(Number(values.startValue));
+    const targetValueInKg = weightToKg(Number(values.targetValue));
+    updateGoal.mutate({
+      ...values,
+      startValue: startValueInKg.toString(),
+      targetValue: targetValueInKg.toString(),
+    });
   }
 
   console.log("goal data", data);

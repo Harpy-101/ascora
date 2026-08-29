@@ -12,10 +12,12 @@ import { GoalProgressCard } from "./components/GoalProgressCard";
 import convertToDate from "./validation/helpers/convertToDate";
 import calculateExpectedProgres from "./functions/calculateExpectedProgress";
 import calculateGoalProgress from "./functions/calculateGoalProgress";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 export default function GoalsScreen() {
   const { data, error, isLoading, refetch } = useGoals();
   const router = useRouter();
+  const { formatWeight } = usePreferences();
 
   if (isLoading) {
     return <ScreenLoadingState />;
@@ -87,7 +89,6 @@ export default function GoalsScreen() {
 
             break;
         }
-        console.log("item id", item.id);
 
         return (
           <Pressable
@@ -103,7 +104,7 @@ export default function GoalsScreen() {
             <GoalProgressCard
               expectedProgress={expectedProgress}
               progress={progress}
-              title={`Reach ${item.targetValue} kg`}
+              title={`Reach ${formatWeight(item.targetValue, undefined, true)}`}
             />
           </Pressable>
         );

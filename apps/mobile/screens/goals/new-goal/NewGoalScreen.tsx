@@ -6,8 +6,10 @@ import ScreenHeader from "@/components/ui/screen-header";
 import useGetLastWeight from "@/screens/weight/hooks/use-get-last-weight";
 import ScreenErrorState from "@/components/screen-states/ScreenErrorState";
 import ScreenLoadingState from "@/components/screen-states/ScreenLoadingStates";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 export default function NewGoalScreen() {
+  const { weightToKg } = usePreferences();
   const createGoal = useCreateGoal();
   const {
     data: latestWeightEntry,
@@ -18,7 +20,13 @@ export default function NewGoalScreen() {
   } = useGetLastWeight();
 
   function onSubmit(values: GoalSchemaValues) {
-    createGoal.mutate(values);
+    const startValueInKg = weightToKg(Number(values.startValue));
+    const targetValueInKg = weightToKg(Number(values.targetValue));
+    createGoal.mutate({
+      ...values,
+      startValue: startValueInKg.toString(),
+      targetValue: targetValueInKg.toString(),
+    });
   }
 
   if (error) {

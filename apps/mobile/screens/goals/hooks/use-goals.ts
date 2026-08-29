@@ -15,3 +15,5 @@ export default function useGoals() {
     enabled: !!user?.id,
   });
 }
+
+export type GoalData = ReturnType<typeof useGoals>["data"];
