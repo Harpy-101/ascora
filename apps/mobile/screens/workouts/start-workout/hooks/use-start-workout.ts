@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentUser } from "@/lib/auth/context/current-user-context";
 import startEmptyWorkout from "../db/startEmptyWorkout";
 import startWorkoutFromTemplate from "../db/startWorkoutFromTemplate";
@@ -9,6 +9,8 @@ type StartWorkoutVariables = {
 
 export default function useStartWorkout() {
   const { user } = useCurrentUser();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ templateId }: StartWorkoutVariables) => {
       if (!user?.id) {
@@ -20,6 +22,12 @@ export default function useStartWorkout() {
       } else {
         return startEmptyWorkout(user.id);
       }
+    },
+
+    onSuccess: async () => {
+      if (!user?.id) return;
+
+      await queryClient.invalidateQueries({ queryKey: ["active-workout"] });
     },
   });
 }
