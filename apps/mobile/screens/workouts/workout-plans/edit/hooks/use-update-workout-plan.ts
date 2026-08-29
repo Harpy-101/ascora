@@ -3,6 +3,8 @@ import updateWorkoutPlan from "../db/updateWorkoutPlan";
 import { WorkoutPlanFormValues } from "../../validation/planExerciseSchema";
 import { useCurrentUser } from "@/lib/auth/context/current-user-context";
 import { useRouter } from "expo-router";
+import preparePlanForSave from "../../functions/preparePlanForSave";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 type UseUpdateWorkoutPlanValues = {
   templateId: string;
@@ -10,6 +12,7 @@ type UseUpdateWorkoutPlanValues = {
 };
 
 export default function useUpdateWorkoutPlan() {
+  const { weightUnit } = usePreferences();
   const { user } = useCurrentUser();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -19,7 +22,8 @@ export default function useUpdateWorkoutPlan() {
       if (!user?.id) {
         throw new Error("User must be logged in");
       }
-      return updateWorkoutPlan(templateId, payload, user.id);
+      const mappedValues = preparePlanForSave(payload, weightUnit);
+      return updateWorkoutPlan(templateId, mappedValues, user.id);
     },
     onError: (error) => {
       console.error(

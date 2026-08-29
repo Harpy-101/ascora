@@ -11,3 +11,5 @@ export default function useGetWorkoutPlanById(templateId: string) {
     enabled: !!user?.id && !!templateId,
   });
 }
+
+export type WorkoutPlanData = ReturnType<typeof useGetWorkoutPlanById>["data"];
