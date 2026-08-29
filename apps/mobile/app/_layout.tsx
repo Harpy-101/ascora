@@ -12,6 +12,7 @@ import { queryClient } from "@/lib/query-client/queryClient";
 
 import { CurrentUserProvider } from "@/lib/auth/context/current-user-context";
 import RootNavigator from "@/lib/RootNavigator";
+import { PreferencesProvider } from "@/contexts/user-prefrences-context";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme() ?? "light";
@@ -32,16 +33,18 @@ export default function RootLayout() {
         <DbGate>
           <QueryClientProvider client={queryClient}>
             <CurrentUserProvider>
-              <RootNavigator />
-              {/* <Stack screenOptions={{ headerShown: false }}>
+              <PreferencesProvider>
+                <RootNavigator />
+                {/* <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Protected guard={!isAuthenticated}>
-                  <Stack.Screen name="(auth)" />
+                <Stack.Screen name="(auth)" />
                 </Stack.Protected>
-
+                
                 <Stack.Protected guard={isAuthenticated}>
-                  <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="(tabs)" />
                 </Stack.Protected>
-              </Stack> */}
+                </Stack> */}
+              </PreferencesProvider>
             </CurrentUserProvider>
           </QueryClientProvider>
         </DbGate>
