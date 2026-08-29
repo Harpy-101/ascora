@@ -114,33 +114,40 @@ export default function ExerciseAccordion({
 
   return (
     <View className="rounded-xl border border-border bg-card p-4">
-      <View className="flex-row items-center justify-between">
-        <Pressable onPress={toggle} className="grow justify-center">
-          <View>
-            <Text className="text-lg font-semibold">{exercise.name}</Text>
+      <View className="flex-row items-center">
+        <Pressable
+          onPress={toggle}
+          className="flex-1 justify-center"
+          style={{
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
+          {/* <View className="min-w-0"> */}
+          <Text
+            className="text-lg font-semibold "
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {exercise.name}
+          </Text>
 
-            {/* <Text className="mt-1 text-sm text-muted-foreground">
-            {`Last: ${exercise.lastPerformance ?? "No history"} · PR: ${
-              exercise.pr ?? "None"
-              }`}
-              </Text> */}
-
-            <View className="mt-2 flex-row gap-1">
-              {setFields.map((set) => (
-                <View
-                  key={set.id}
-                  className={
-                    set.completed
-                      ? "h-2 w-2 rounded-full bg-primary"
-                      : "h-2 w-2 rounded-full bg-muted"
-                  }
-                />
-              ))}
-            </View>
+          <View className="mt-2 flex-row gap-1">
+            {setFields.map((set) => (
+              <View
+                key={set.id}
+                className={
+                  set.completed
+                    ? "h-2 w-2 rounded-full bg-primary"
+                    : "h-2 w-2 rounded-full bg-muted"
+                }
+              />
+            ))}
           </View>
+          {/* </View> */}
         </Pressable>
 
-        <View className="flex-row inline-flex gap-2">
+        <View className="ml-2 shrink-0 flex-row items-center gap-2">
           <ExerciseAccordionDropDownMenu
             exerciseName={exercise.name}
             onRemoveExercise={onRemoveExercise}

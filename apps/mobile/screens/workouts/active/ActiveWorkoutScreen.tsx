@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { WorkoutFormValues } from "@/lib/validation/exerciseSchemas";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 // import { NotebookPen } from "lucide-react-native";
 import ExerciseList from "../components/ExerciseList";
 import { Href, useRouter } from "expo-router";
@@ -19,6 +19,8 @@ import completeWorkout from "./db/completeWorkout";
 import prepareWorkoutForSave from "./functions/prepareWorkoutForSave";
 import { usePreferences } from "@/contexts/user-prefrences-context";
 import { useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { calculateWorkoutStats } from "./functions/calculateWorkoutStats";
 
 type ActiveWorkoutScreenProps = {
   workoutId: string;
@@ -55,6 +57,10 @@ export default function ActiveWorkoutScreen({
     }
   }
 
+  const exercises = useWatch({ control: form.control, name: "exercises" });
+
+  const stats = useMemo(() => calculateWorkoutStats(exercises), [exercises]);
+
   function onInvalid(errors: unknown) {
     console.log("invalid workout", errors);
   }
@@ -77,21 +83,23 @@ export default function ActiveWorkoutScreen({
               void autoSave.retry();
             }}
           />
-          {/* <View className="flex-row justify-between">
-            <Text variant="h1">Workouts</Text>
-            <Button variant="outline" size="icon">
-              <NotebookPen size={18} color="white" />
-            </Button>
-          </View> */}
 
           <View className="gap-2">
             <View className="flex-row justify-between">
               <Text className="text-sm font-medium">Progress</Text>
-              <Text className="text-sm text-muted-foreground"> 2 / 3</Text>
+
+              <Text className="text-sm text-muted-foreground">
+                {stats.completedSets} / {stats.totalSets}
+              </Text>
             </View>
 
             <View className="h-2 overflow-hidden rounded-full bg-muted">
-              <View className="h-full w-[67%] rounded-full bg-primary" />
+              <View
+                className="h-full rounded-full bg-primary"
+                style={{
+                  width: `${stats.progressPercent}%`,
+                }}
+              />
             </View>
           </View>
 
@@ -101,7 +109,9 @@ export default function ActiveWorkoutScreen({
                 Volume
               </Text>
               <Text className="text-lg font-semibold text-center">
-                1,080 kg
+                {stats.volume.toLocaleString(undefined, {
+                  maximumFractionDigits: 1,
+                })}{" "}
               </Text>
             </View>
 
@@ -109,7 +119,9 @@ export default function ActiveWorkoutScreen({
               <Text className="text-xs text-muted-foreground text-center">
                 Exercises
               </Text>
-              <Text className="text-lg font-semibold text-center">1 / 4</Text>
+              <Text className="text-lg font-semibold text-center">
+                {stats.completedExercises} / {stats.totalExercises}
+              </Text>
             </View>
 
             <View className="flex-1 rounded-xl border border-border bg-card p-3">
