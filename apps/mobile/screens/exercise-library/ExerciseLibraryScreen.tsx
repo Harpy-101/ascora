@@ -78,7 +78,7 @@ export default function ExerciseLibraryScreen({
       <ScrollView
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
-        contentContainerClassName="gap-4 px-2"
+        contentContainerClassName="gap-4"
       >
         <View className="flex-1 gap-4">
           <ExerciseSearchField
