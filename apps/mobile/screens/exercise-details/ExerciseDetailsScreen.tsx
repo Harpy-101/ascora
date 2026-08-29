@@ -17,7 +17,6 @@ export default function ExerciseDetailsScreen({
   appendExercise: (exerciseId: ExerciseToAdd) => void;
 }) {
   const router = useRouter();
-  // const { appendExercise } = useActiveWorkoutForm();
   const { data, refetch, isPending, isError, error } =
     useExerciseDetails(exerciseId);
 
@@ -35,7 +34,6 @@ export default function ExerciseDetailsScreen({
     );
   }
 
-  // const exercise = mockExerciseDetails;
   const exercise = data;
 
   function addExercise(exercise: { exerciseId: string; name: string }) {
@@ -50,7 +48,7 @@ export default function ExerciseDetailsScreen({
   }
 
   return (
-    <ScrollView contentContainerClassName="px-2 gap-4">
+    <ScrollView contentContainerClassName="gap-4">
       <ExerciseDetailsHeader
         {...exercise.data}
         onAddToWorkout={() => addExercise({ ...exercise.data })}
