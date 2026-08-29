@@ -2,6 +2,7 @@ import { View } from "react-native";
 import { ExerciseHistoryMetrics } from "../../../types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 type ExerciseStatSectionProps = {
   metrics: ExerciseHistoryMetrics;
@@ -17,23 +18,25 @@ type StatCardData = {
 export default function ExerciseStatCardSection({
   metrics,
 }: ExerciseStatSectionProps) {
+  const { displayWeight, weightUnit } = usePreferences();
   const secondaryStats: StatCardData[] = [
     {
       label: "Best session",
-      value: metrics.bestSessionVolume,
-      unit: "kg",
+      value:
+        metrics.bestSessionVolume && displayWeight(metrics.bestSessionVolume),
+      unit: weightUnit,
       description: "Highest total volume in one workout",
     },
     {
       label: "Best set",
-      value: metrics.bestSetVolume,
-      unit: "kg",
+      value: metrics.bestSetVolume && displayWeight(metrics.bestSetVolume),
+      unit: weightUnit,
       description: "Highest volume in a single set",
     },
     {
       label: "Total volume",
-      value: metrics.totalVolume,
-      unit: "kg",
+      value: metrics.totalVolume && displayWeight(metrics.totalVolume),
+      unit: weightUnit,
       description: "All-time logged volume",
     },
   ];
@@ -60,7 +63,13 @@ export default function ExerciseStatCardSection({
             </View>
           </View>
 
-          <MetricValue value={metrics.bestEstimatedOneRepMax} unit="kg" />
+          <MetricValue
+            value={
+              metrics.bestEstimatedOneRepMax &&
+              displayWeight(metrics.bestEstimatedOneRepMax)
+            }
+            unit={weightUnit}
+          />
         </CardContent>
       </Card>
 

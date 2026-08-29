@@ -5,6 +5,7 @@ import { LinearGradient, useFont, vec } from "@shopify/react-native-skia";
 
 import { Text } from "@/components/ui/text";
 import { ChartMetric } from "@/screens/exercise-details/types";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 type ProgressionPoint = {
   date: string;
@@ -22,30 +23,31 @@ type ExerciseProgressionChartProps = {
   controls?: ReactNode;
 };
 
-export const METRIC_CONFIG = {
-  estimatedOneRepMax: {
-    label: "Estimated 1RM",
-    ySuffix: " kg",
-    color: "#059669",
-  },
-  maxWeight: {
-    label: "Max weight",
-    ySuffix: " kg",
-    color: "#2563EB",
-  },
-  sessionVolume: {
-    label: "Session volume",
-    ySuffix: " kg",
-    color: "#7C3AED",
-  },
-} as const;
-
 export function ExerciseProgressionChart({
   progression,
   metric = "estimatedOneRepMax",
   header,
   controls,
 }: ExerciseProgressionChartProps) {
+  const { weightUnit, displayWeight } = usePreferences();
+  const METRIC_CONFIG = {
+    estimatedOneRepMax: {
+      label: "Estimated 1RM",
+      ySuffix: weightUnit,
+      color: "#059669",
+    },
+    maxWeight: {
+      label: "Max weight",
+      ySuffix: weightUnit,
+      color: "#2563EB",
+    },
+    sessionVolume: {
+      label: "Session volume",
+      ySuffix: weightUnit,
+      color: "#7C3AED",
+    },
+  } as const;
+
   const font = useFont(
     require("@/assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf"),
     11,
@@ -64,13 +66,13 @@ export function ExerciseProgressionChart({
 
         return {
           session: index + 1,
-          value: Math.round(value * 10) / 10,
+          value: Math.round(displayWeight(value) * 10) / 10,
           dateLabel: formatDateLabel(point.date),
           workoutId: point.workoutId,
         };
       })
       .filter((point): point is NonNullable<typeof point> => point !== null);
-  }, [progression, metric]);
+  }, [progression, metric, displayWeight]);
 
   if (chartData.length === 0) {
     return (
