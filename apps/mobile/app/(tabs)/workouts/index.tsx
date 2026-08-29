@@ -1,13 +1,5 @@
-import { ActiveWorkoutFormProvider } from "@/contexts/active-workout-form-context";
-import WorkoutsScreen from "@/screens/workouts/WorkoutScreen";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Redirect } from "expo-router";
 
 export default function WorkoutsTab() {
-  return (
-    <ActiveWorkoutFormProvider>
-      <SafeAreaView edges={["top", "left", "right"]} style={{ flex: 1 }}>
-        <WorkoutsScreen />
-      </SafeAreaView>
-    </ActiveWorkoutFormProvider>
-  );
+  return <Redirect href="/workouts/start" />;
 }

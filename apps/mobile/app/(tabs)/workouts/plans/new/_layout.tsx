@@ -4,20 +4,10 @@ import { Stack } from "expo-router";
 export default function PlanCreationLayout() {
   return (
     <WorkoutPlanFormProvider>
-      <Stack>
-        <Stack.Screen
-          name="index"
-          options={{
-            title: "Create workout plan",
-          }}
-        />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
 
-        <Stack.Screen
-          name="exercises"
-          options={{
-            title: "Exercise library",
-          }}
-        />
+        <Stack.Screen name="exercises" />
       </Stack>
     </WorkoutPlanFormProvider>
   );
