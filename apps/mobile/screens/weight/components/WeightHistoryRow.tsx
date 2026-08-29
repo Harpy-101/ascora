@@ -3,6 +3,7 @@ import { WeightEntry } from "../types";
 import { Text } from "@/components/ui/text";
 import ThemedIcon from "@/components/ui/themed-icon";
 import { ChevronRight } from "lucide-react-native";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 type WeightHistoryRowProps = {
   entry: WeightEntry;
@@ -15,6 +16,8 @@ export default function WeightHistoryRow({
   previousEntry,
   onPress,
 }: WeightHistoryRowProps) {
+  const { displayWeight, weightUnit } = usePreferences();
+
   const delta = previousEntry
     ? entry.weightInKg - previousEntry.weightInKg
     : null;
@@ -41,10 +44,10 @@ export default function WeightHistoryRow({
       <View className="flex-row items-center gap-3">
         <View className="items-end">
           <Text className="text-lg font-semibold text-foreground">
-            {entry.weightInKg.toFixed(1)}
+            {displayWeight(entry.weightInKg).toFixed(1)}
             <Text className="text-sm font-normal text-muted-foreground">
               {" "}
-              kg
+              {weightUnit}
             </Text>
           </Text>
         </View>

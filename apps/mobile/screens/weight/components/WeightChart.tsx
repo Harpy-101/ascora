@@ -4,6 +4,7 @@ import { WeightEntry } from "../types";
 import RangeSelector, {
   SelectorOption,
 } from "@/components/charts/components/RangSelector";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 type DateRange = "1W" | "1M" | "3M" | "1Y" | "ALL";
 
@@ -12,6 +13,8 @@ type WeightChartValues = {
 };
 
 export default function WeightChart({ weightHistory = [] }: WeightChartValues) {
+  const { displayWeight, weightUnit } = usePreferences();
+
   const [range, setRange] = useState<DateRange>("1M");
 
   const TIME_RANGES: SelectorOption<DateRange>[] = [
@@ -64,10 +67,10 @@ export default function WeightChart({ weightHistory = [] }: WeightChartValues) {
     <TimeSeriesChart
       data={filterProggresion}
       getDate={(entry: WeightEntry) => entry.recordedAt}
-      getValue={(entry: WeightEntry) => entry.weightInKg}
+      getValue={(entry: WeightEntry) => displayWeight(entry.weightInKg)}
       title="Weight trend"
       subtitle="Your weight over time"
-      unit=" kg"
+      unit={weightUnit}
       emptyMessage="Log your weight to start seeing your trend."
       controls={
         <RangeSelector<DateRange>

@@ -28,6 +28,7 @@ import DateTimePicker, {
 import { WeightEntry } from "../types";
 import useUpdateWeightEntry from "../hooks/use-update-weight-entry";
 import ScreenHeader from "@/components/ui/screen-header";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 type WeightEntryFormProps = {
   entry?: WeightEntry;
@@ -38,6 +39,7 @@ export default function WeightEntryForm({
   entry,
   lastWeight,
 }: WeightEntryFormProps) {
+  const { weightToKg, displayWeight } = usePreferences();
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [draftDate, setDraftDate] = useState(new Date());
   const createWeightEntry = useCreateWeightEntry();
@@ -48,16 +50,26 @@ export default function WeightEntryForm({
     defaultValues: {
       recordedAt: entry?.recordedAt ?? new Date().toISOString(),
       weightInKg:
-        entry?.weightInKg.toString() || lastWeight?.weightInKg.toString() || "",
+        (entry && displayWeight(entry?.weightInKg).toFixed(1).toString()) ||
+        (lastWeight &&
+          displayWeight(lastWeight?.weightInKg).toFixed(1).toString()) ||
+        "",
     },
   });
 
   function onSubmit(values: WeightEntryValues) {
     console.log("weight values", values);
+    console.log("Attempting to fire");
     if (entry) {
-      updateWeightEntry.mutate({ values: values, weightEntryId: entry?.id });
+      updateWeightEntry.mutate({
+        values: { ...values, weightInKg: weightToKg(values.weightInKg) },
+        weightEntryId: entry?.id,
+      });
     } else {
-      createWeightEntry.mutate(values);
+      createWeightEntry.mutate({
+        ...values,
+        weightInKg: weightToKg(values.weightInKg),
+      });
     }
   }
 
@@ -82,7 +94,7 @@ export default function WeightEntryForm({
           showBack
           rightAction={
             <Button
-              onPress={() => form.handleSubmit(onSubmit)}
+              onPress={form.handleSubmit(onSubmit)}
               size="icon"
               variant="ghost"
               hitSlop={10}
@@ -96,24 +108,31 @@ export default function WeightEntryForm({
           name="weightInKg"
           control={form.control}
           render={({ field, fieldState }) => (
-            <FormField label="Weight" error={fieldState.error?.message}>
-              <Input
-                value={field.value}
-                onChangeText={field.onChange}
-                onBlur={field.onBlur}
-                keyboardType="decimal-pad"
-                placeholder="Current weight..."
-                returnKeyType="done"
-                accessibilityLabel="Weight"
-              />
-            </FormField>
+            <>
+              <FormField label="Weight" error={fieldState.error?.message}>
+                <Input
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  onBlur={field.onBlur}
+                  keyboardType="decimal-pad"
+                  placeholder="Current weight..."
+                  returnKeyType="done"
+                  accessibilityLabel="Weight"
+                />
+              </FormField>
+              {fieldState.error && (
+                <Text className="text-sm text-destructive">
+                  {fieldState.error.message}
+                </Text>
+              )}
+            </>
           )}
         />
 
         <Controller
           name="recordedAt"
           control={form.control}
-          render={({ field }) => {
+          render={({ field, fieldState }) => {
             const value = field.value ? new Date(field.value) : new Date();
 
             const openDatePicker = () => {
@@ -224,6 +243,11 @@ export default function WeightEntryForm({
                       </Pressable>
                     </Pressable>
                   </Modal>
+                )}
+                {fieldState.error && (
+                  <Text className="text-sm text-destructive">
+                    {fieldState.error.message}
+                  </Text>
                 )}
               </View>
             );
