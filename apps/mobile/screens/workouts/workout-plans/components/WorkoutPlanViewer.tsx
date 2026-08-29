@@ -36,10 +36,6 @@ export default function WorkoutPlanViewer({
   const updatePlan = useUpdateWorkoutPlan();
 
   const { exerciseFields, moveExercise, removeExercies } = useWorkoutPlanForm();
-  // const { fields, remove, move } = useFieldArray({
-  //   control: form.control,
-  //   name: "exercises",
-  // });
 
   const isSubmitting = createPlan.isPending;
 
@@ -71,33 +67,14 @@ export default function WorkoutPlanViewer({
   }
 
   return (
-    // <SafeAreaView edges={["top", "bottom"]} style={{ flex: 1 }}>
     <KeyboardAvoidingView
       className="flex-1"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
         keyboardShouldPersistTaps="handled"
-        contentContainerClassName="gap-7 px-4 py-5 "
+        contentContainerClassName="gap-7"
       >
-        {/* <View className="flex-row items-center border-b border-border px-4 py-3">
-          <Pressable
-            onPress={handleBack}
-            accessibilityRole="button"
-            accessibilityLabel="Go back"
-            className="h-10 w-10 items-center justify-center rounded-full active:bg-muted"
-          >
-            <ThemedIcon icon={ChevronLeft} size={23} colorToken="foreground" />
-          </Pressable>
-
-          <View className="ml-2 flex-1">
-            <Text className="text-lg font-semibold">New workout plan</Text>
-
-            <Text className="text-xs text-muted-foreground">
-              Build a reusable workout
-            </Text>
-          </View>
-        </View> */}
         <View className="gap-4 ">
           <View className="gap-1">
             <Text className="font-semibold">Plan details</Text>
@@ -252,6 +229,5 @@ export default function WorkoutPlanViewer({
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
-    // </SafeAreaView>
   );
 }
