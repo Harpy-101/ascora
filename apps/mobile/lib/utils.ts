@@ -14,3 +14,13 @@ export function capitalize(str: string) {
 export function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
+
+const KG_TO_LB = 2.2046226218;
+
+export function kgToLb(kg: number) {
+  return kg * KG_TO_LB;
+}
+
+export function lbToKg(lb: number) {
+  return lb / KG_TO_LB;
+}
