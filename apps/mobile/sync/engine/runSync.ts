@@ -4,7 +4,13 @@ import prepareSyncRequest from "./prepareSyncRequest";
 
 const MAX_SYNC_PASSES = 10;
 
-export default async function ruinSync(userId: string): Promise<void> {
+type RunSyncResult = {
+  insightChanged: boolean;
+};
+
+export default async function ruinSync(userId: string): Promise<RunSyncResult> {
+  let insightChanged = false;
+
   for (let pass = 0; pass < MAX_SYNC_PASSES; pass++) {
     const prepared = await prepareSyncRequest(userId);
 
@@ -12,15 +18,16 @@ export default async function ruinSync(userId: string): Promise<void> {
 
     const result = await applySyncResponse(userId, prepared, response);
 
-    // console.log("Blocked by conflict = ", result.blockedByConflict);
-    // console.log("chnages", response.changes);
+    if (result.insightChanged) {
+      insightChanged = true;
+    }
 
     if (result.blockedByConflict) {
-      return;
+      return { insightChanged };
     }
 
     if (!response.hasMore) {
-      return;
+      return { insightChanged };
     }
   }
 

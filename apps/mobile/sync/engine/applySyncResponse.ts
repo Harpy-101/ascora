@@ -41,6 +41,7 @@ export default async function applySyncResponse(
     let safeCursor = prepared.request.cursor;
 
     let blockedByConflict = false;
+    let insightChanged = false;
 
     for (const change of response.changes) {
       let result: "consumed" | "conflict";
@@ -56,6 +57,9 @@ export default async function applySyncResponse(
 
         case "insight":
           result = await applyInsightServerChange(tx, change, userId);
+          if (result === "consumed") {
+            insightChanged = true;
+          }
           break;
       }
 
@@ -92,6 +96,6 @@ export default async function applySyncResponse(
         },
       });
 
-    return { blockedByConflict };
+    return { blockedByConflict, insightChanged };
   });
 }

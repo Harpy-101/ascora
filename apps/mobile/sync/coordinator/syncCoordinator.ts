@@ -1,13 +1,17 @@
 import runSync from "../engine/runSync";
 
+type SyncResult = {
+  insightChanged: boolean;
+};
+
 type CoordinatorState = {
-  running: Promise<void> | null;
+  running: Promise<SyncResult> | null;
   requestedAgain: boolean;
 };
 
 const states = new Map<string, CoordinatorState>();
 
-export function requestSync(userId: string): Promise<void> {
+export function requestSync(userId: string): Promise<SyncResult> {
   let state = states.get(userId);
 
   if (!state) {
@@ -28,12 +32,22 @@ export function requestSync(userId: string): Promise<void> {
   const currentState = state;
 
   currentState.running = (async () => {
+    let insightChanged = false;
+
     try {
       do {
         currentState.requestedAgain = false;
 
-        await runSync(userId);
+        const result = await runSync(userId);
+
+        if (result.insightChanged) {
+          insightChanged = true;
+        }
       } while (currentState.requestedAgain);
+
+      return {
+        insightChanged,
+      };
     } finally {
       currentState.running = null;
 

@@ -3,11 +3,12 @@ import { useMutation } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
 import saveActiveWorkout from "../db/saveActiveWorkout";
 import useAutoSave from "@/lib/auto-save/hooks/use-auto-save";
-import { requestSync } from "@/sync/coordinator/syncCoordinator";
+// import { requestSync } from "@/sync/coordinator/syncCoordinator";
 import { useCurrentUser } from "@/lib/auth/context/current-user-context";
 import prepareWorkoutForSave from "../functions/prepareWorkoutForSave";
 import { usePreferences } from "@/contexts/user-prefrences-context";
 import { WorkoutSaveValues } from "../types";
+import useSync from "@/sync/lifecycle/useSync";
 
 type UseWorkoutAutoSaveOptions = {
   workoutId: string;
@@ -20,6 +21,7 @@ export default function useWorkoutAutoSave({
 }: UseWorkoutAutoSaveOptions) {
   const { weightUnit } = usePreferences();
   const { user } = useCurrentUser();
+  const { sync } = useSync();
   const saveMutation = useMutation({
     mutationFn: async (values: WorkoutSaveValues) => {
       await saveActiveWorkout({ workoutId, values });
@@ -39,7 +41,7 @@ export default function useWorkoutAutoSave({
       if (!user?.id) {
         throw new Error("User must be logged in in order to sync data");
       }
-      requestSync(user.id);
+      void sync();
     },
   });
 }
