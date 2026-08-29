@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import ControlledDatePicker from "@/components/ui/controlled-date-picker";
 import { WeightEntry } from "@/screens/weight/types";
+import { usePreferences } from "@/contexts/user-prefrences-context";
 
 type GoalFormProps = {
   entry?: GoalEntry;
@@ -22,8 +23,9 @@ export default function GoalForm({
   onSubmit,
   latestValue,
 }: GoalFormProps) {
+  const { displayWeight, weightUnit } = usePreferences();
   const router = useRouter();
-  console.log("entry in gfoal form", entry);
+
   const form = useForm<GoalSchemaValues>({
     resolver: zodResolver(goalSchema),
     defaultValues: {
@@ -31,10 +33,11 @@ export default function GoalForm({
       startDate: entry?.startDate || new Date().toISOString(),
       dueDate: entry?.dueDate || "",
       startValue:
-        entry?.startValue?.toString() ||
-        latestValue?.weightInKg.toString() ||
+        (entry && displayWeight(entry.startValue).toFixed(1)) ||
+        (latestValue && displayWeight(latestValue?.weightInKg).toFixed(1)) ||
         "",
-      targetValue: entry?.targetValue?.toString() || "",
+      targetValue:
+        (entry && displayWeight(entry?.targetValue).toFixed(1)) || "",
     },
   });
 
@@ -118,7 +121,9 @@ export default function GoalForm({
                 keyboardType="decimal-pad"
                 className="min-w-28 text-center text-4xl font-semibold text-foreground"
               />
-              <Text className="ml-2 text-xl text-muted-foreground">kg</Text>
+              <Text className="ml-2 text-xl text-muted-foreground">
+                {weightUnit}
+              </Text>
             </View>
 
             {fieldState.error && (
