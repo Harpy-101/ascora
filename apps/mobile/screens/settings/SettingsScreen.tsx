@@ -35,8 +35,8 @@ export default function SettingsScreen() {
       {/* <ProfileSummary user={user} /> */}
 
       <SettingsSection title="Preferences">
-        <View className="gap-5 p-4">
-          <View className="flex-row items-center justify-between">
+        <View>
+          <View className="flex-row items-center justify-between p-4">
             <View className="flex-row gap-3 items-center">
               <View className="size-9  items-center justify-center rounded-lg bg-muted">
                 <ThemedIcon icon={Moon} colorToken="foreground" size={18} />
@@ -59,7 +59,7 @@ export default function SettingsScreen() {
 
           <SettingsSeparator />
 
-          <View className="flex-row items-center justify-between">
+          <View className="flex-row items-center justify-between p-4 ">
             <View className="flex-row gap-3 items-center">
               <View className="size-9  items-center justify-center rounded-lg bg-muted">
                 <ThemedIcon icon={Scale} colorToken="foreground" size={18} />

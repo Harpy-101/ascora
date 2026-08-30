@@ -6,7 +6,15 @@ export const goalSchema = z
   .object({
     type: z.enum(GOAL_TYPES),
     startValue: z.string(),
-    targetValue: z.string(),
+    targetValue: z.string().refine(
+      (val) => {
+        const num = Number(val);
+        return !isNaN(num) && num > 1;
+      },
+      {
+        message: "Must be a positive number",
+      },
+    ),
     startDate: z.string().min(1, "Must pick a start date"),
     dueDate: z.string().min(1, "Must pick a due date"),
   })

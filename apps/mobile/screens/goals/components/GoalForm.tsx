@@ -31,7 +31,7 @@ export default function GoalForm({
     defaultValues: {
       type: entry?.type || "weight",
       startDate: entry?.startDate || new Date().toISOString(),
-      dueDate: entry?.dueDate || "",
+      dueDate: entry?.dueDate || new Date().toISOString(),
       startValue:
         (entry && displayWeight(entry.startValue).toFixed(1)) ||
         (latestValue && displayWeight(latestValue?.weightInKg).toFixed(1)) ||

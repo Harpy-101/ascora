@@ -10,7 +10,7 @@ import { CalendarDays, ChevronRight } from "lucide-react-native";
 import { Button } from "./button";
 
 type ControlledDatePickerProps<TFieldValue extends FieldValues> = {
-  control: Control<TFieldValue>;
+  control: Control<TFieldValue, any, any>;
   name: Path<TFieldValue>;
   title: string;
   minimumDate?: string;
@@ -31,7 +31,7 @@ export default function ControlledDatePicker<TFieldValue extends FieldValues>({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => {
+      render={({ field, fieldState }) => {
         const value = field.value ? new Date(field.value) : new Date();
 
         const openDatePicker = () => {
@@ -145,6 +145,11 @@ export default function ControlledDatePicker<TFieldValue extends FieldValues>({
                   </Pressable>
                 </Pressable>
               </Modal>
+            )}
+            {fieldState.error && (
+              <Text className="text-sm text-destructive">
+                {fieldState.error.message}
+              </Text>
             )}
           </View>
         );

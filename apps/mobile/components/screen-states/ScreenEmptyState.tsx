@@ -8,9 +8,9 @@ type ScreenEmptyStateProps = {
   mainIcon?: LucideIcon;
   mainText: string;
   description: string;
-  actionText: string;
+  actionText?: string;
   actionIcon?: LucideIcon;
-  actionFunction: () => void;
+  actionFunction?: () => void;
 };
 
 export default function ScreenEmptyState({
@@ -37,16 +37,18 @@ export default function ScreenEmptyState({
         </Text>
       </View>
 
-      <Button onPress={actionFunction}>
-        {actionIcon ? (
-          <ThemedIcon
-            icon={actionIcon}
-            size={18}
-            colorToken="primaryForeground"
-          />
-        ) : null}
-        <Text>{actionText}</Text>
-      </Button>
+      {(actionText || actionIcon) && (
+        <Button onPress={actionFunction}>
+          {actionIcon ? (
+            <ThemedIcon
+              icon={actionIcon}
+              size={18}
+              colorToken="primaryForeground"
+            />
+          ) : null}
+          <Text>{actionText}</Text>
+        </Button>
+      )}
     </View>
   );
 }

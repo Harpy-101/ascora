@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useCreateWeightEntry from "../hooks/use-create-weight-entry";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -7,28 +6,18 @@ import {
   WeightEntryValues,
 } from "../validation/weightEntrySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  Pressable,
-  ScrollView,
-  View,
-} from "react-native";
-import { Text } from "@/components/ui/text";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { Button } from "@/components/ui/button";
 import ThemedIcon from "@/components/ui/themed-icon";
-import { CalendarDays, ChevronRight, CircleCheck } from "lucide-react-native";
+import { CircleCheck } from "lucide-react-native";
 import FormField from "@/screens/auth/components/FormField";
 import { Input } from "@/components/ui/input";
-import DateTimePicker, {
-  DateTimePickerAndroid,
-} from "@react-native-community/datetimepicker";
+
 import { WeightEntry } from "../types";
 import useUpdateWeightEntry from "../hooks/use-update-weight-entry";
 import ScreenHeader from "@/components/ui/screen-header";
 import { usePreferences } from "@/contexts/user-prefrences-context";
+import ControlledDatePicker from "@/components/ui/controlled-date-picker";
 
 type WeightEntryFormProps = {
   entry?: WeightEntry;
@@ -40,8 +29,6 @@ export default function WeightEntryForm({
   lastWeight,
 }: WeightEntryFormProps) {
   const { weightToKg, displayWeight } = usePreferences();
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [draftDate, setDraftDate] = useState(new Date());
   const createWeightEntry = useCreateWeightEntry();
   const updateWeightEntry = useUpdateWeightEntry();
 
@@ -120,16 +107,17 @@ export default function WeightEntryForm({
                   accessibilityLabel="Weight"
                 />
               </FormField>
-              {fieldState.error && (
-                <Text className="text-sm text-destructive">
-                  {fieldState.error.message}
-                </Text>
-              )}
             </>
           )}
         />
 
-        <Controller
+        <ControlledDatePicker
+          control={form.control}
+          name="recordedAt"
+          title="Recorded date"
+        />
+
+        {/* <Controller
           name="recordedAt"
           control={form.control}
           render={({ field, fieldState }) => {
@@ -252,7 +240,7 @@ export default function WeightEntryForm({
               </View>
             );
           }}
-        />
+        /> */}
       </ScrollView>
     </KeyboardAvoidingView>
   );

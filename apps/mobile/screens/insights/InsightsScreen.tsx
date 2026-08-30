@@ -43,8 +43,6 @@ export default function InsightsScreen() {
           mainText="No insights yet"
           mainIcon={Sparkles}
           description="Complete workouts and your training insights will appear here."
-          actionText={""}
-          actionFunction={() => console.log("ran")}
         />
       }
       renderItem={({ item }) => <InsightCard insight={item} />}
