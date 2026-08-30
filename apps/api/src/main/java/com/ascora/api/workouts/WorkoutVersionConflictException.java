@@ -1,7 +1,10 @@
 package com.ascora.api.workouts;
 
 import java.util.UUID;
-
+/**
+ * an exception to make life easier when it comes to handling version conflicts
+ * WorkoutVersionConflictException
+ */
 public class WorkoutVersionConflictException extends RuntimeException {
     private final UUID workoutId;
     private final long expectedVersion;

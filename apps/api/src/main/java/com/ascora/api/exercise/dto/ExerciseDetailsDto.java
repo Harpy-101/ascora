@@ -3,6 +3,7 @@ package com.ascora.api.exercise.dto;
 import java.util.List;
 import java.util.Map;
 
+// an object for representing the exercise details objects to be returned to the user
 public record ExerciseDetailsDto(
     String exerciseId, 
     String name, 

@@ -14,26 +14,37 @@ import com.ascora.api.sync.service.SyncService;
 
 import jakarta.validation.Valid;
 // import lombok.RequiredArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-
+/**
+ * a class for representing a the controller handliong the sync endpointds
+ * SyncController
+ */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/sync")
 public class SyncController {
 
     private final SyncService syncService;
     private final CurrentUserResolver currentUserResolver;
 
-    public SyncController(
-        SyncService syncService,
-        CurrentUserResolver currentUserResolver
-    ) {
-        this.syncService =
-            syncService;
+    // public SyncController(
+    //     SyncService syncService,
+    //     CurrentUserResolver currentUserResolver
+    // ) {
+    //     this.syncService =
+    //         syncService;
 
-        this.currentUserResolver =
-            currentUserResolver;
-    }
+    //     this.currentUserResolver =
+    //         currentUserResolver;
+    // }
 
+    /**
+     * a fucntion meant to facilitate the sync ing process
+     * @param jwt
+     * @param request
+     * @return
+     */
     @PostMapping
     public SyncResponse sync(
         @AuthenticationPrincipal Jwt jwt,

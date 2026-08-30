@@ -12,12 +12,22 @@ import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 
+ * WorkoutRepository Not much to say its a repo
+ */
 @Repository
 @RequiredArgsConstructor
 public class WorkoutRepository {
 
     private final JdbcTemplate jdbc;
 
+    /**
+     * 
+     * @param workoutId the workout id 
+     * @param userId the user id 
+     * @return a complete workout
+     */
     public Optional<Workout> findByIdAndUserId(
         UUID workoutId,
         UUID userId
@@ -135,6 +145,11 @@ public class WorkoutRepository {
         return Optional.of(workout);
     } 
 
+    /**
+     * inserting a new workout
+     * @param workout the workout
+     * @return server version
+     */
     public long insert(Workout workout) {
         long initialServerVersion = 1L;
 
@@ -165,6 +180,10 @@ public class WorkoutRepository {
         return initialServerVersion;
     }
 
+    /**
+     * inserting an exercise
+     * @param workout thw complete workout 
+     */
     private void insertExercises(Workout workout) {
         for (WorkoutExercise exercise : workout.exercises()) {
             jdbc.update(
@@ -189,6 +208,10 @@ public class WorkoutRepository {
         }
     }
 
+    /**
+     * 
+     * @param exercise an exercise
+     */
     private void insertSets(
         WorkoutExercise exercise
     ) {
@@ -215,6 +238,12 @@ public class WorkoutRepository {
         }
     }
 
+    /**
+     * 
+     * @param workout the complete workout
+     * @param expectedServerVersion for checking/updating the current version
+     * @return
+     */
     public OptionalLong update(
         Workout workout, 
         long expectedServerVersion
@@ -256,6 +285,10 @@ public class WorkoutRepository {
         return OptionalLong.of(newServerVersion);
     }
     
+    /**
+     * 
+     * @param workout the complete workout
+     */
     private void replaceWorkoutChildren(
         Workout workout
     ) {
@@ -300,6 +333,11 @@ public class WorkoutRepository {
         );
     }
 
+    /**
+     * searching a workout for internal use not for actual user facing operations
+     * @param workoutId 
+     * @return workout if found
+     */
     public Optional<Workout> findById(UUID workoutId) {
         var result =  jdbc.query(
             """

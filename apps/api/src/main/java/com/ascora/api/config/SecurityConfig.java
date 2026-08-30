@@ -10,9 +10,23 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * 
+ * config class for sorting out the auth interaction with better auth 
+ * @param http
+ * @return
+ * @throws Exception
+ */
+
 @Configuration
 public class SecurityConfig {
     
+    /**
+     * sorting out which routes can (and can't) be accessed while being authenticated
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)

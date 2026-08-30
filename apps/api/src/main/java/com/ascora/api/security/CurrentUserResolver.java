@@ -10,11 +10,20 @@ import com.ascora.api.user.repository.AppUserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * a class for faciliting user auth checks
+ * CurrentUserResolver
+ */
 @Component
 @RequiredArgsConstructor
 public class CurrentUserResolver {
     private final AppUserRepository userRepository;
 
+    /**
+     * a function for checking the users authsubject (created by better auth) in order to gfigure out who is the actual user
+     * @param jwt
+     * @return
+     */
     public AppUser requireUser(Jwt jwt) {
         String authSubject = jwt.getSubject();
         if (authSubject == null || authSubject.isBlank()) {

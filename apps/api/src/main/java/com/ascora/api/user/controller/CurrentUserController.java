@@ -11,6 +11,10 @@ import com.ascora.api.user.service.AppUserService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * a class representing the controller for user specific enpoints
+ * CurrentUserController
+ */
 @RestController
 @RequestMapping("/api/me")
 @RequiredArgsConstructor
@@ -28,6 +32,11 @@ public class CurrentUserController {
     //     );
     // }
 
+    /**
+     * a ucntion for retrning or creating a user 
+     * @param jwt
+     * @return
+     */
     @PostMapping("/bootstrap")
     public AppUserResponse bootstrapUser(
         @AuthenticationPrincipal Jwt jwt

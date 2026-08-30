@@ -12,6 +12,13 @@ import com.ascora.api.sync.dto.SyncMutation;
 import com.ascora.api.sync.dto.SyncRequest;
 import com.ascora.api.sync.dto.SyncResponse;
 
+import lombok.RequiredArgsConstructor;
+
+/**
+ * a class for the sync service
+ * SyncService
+ */
+@RequiredArgsConstructor
 @Service
 public class SyncService {
 
@@ -20,17 +27,23 @@ public class SyncService {
     private final WorkoutSyncApplier workoutSyncApplier;
     private final PullChangesService pullChangesService;
 
-    public SyncService(
-        WorkoutSyncApplier workoutSyncApplier,
-        PullChangesService pullChangesService
-    ) {
-        this.workoutSyncApplier =
-            workoutSyncApplier;
+    // public SyncService(
+    //     WorkoutSyncApplier workoutSyncApplier,
+    //     PullChangesService pullChangesService
+    // ) {
+    //     this.workoutSyncApplier =
+    //         workoutSyncApplier;
 
-        this.pullChangesService =
-            pullChangesService;
-    }
+    //     this.pullChangesService =
+    //         pullChangesService;
+    // }
 
+    /**
+     * the actual sync function
+     * @param userId
+     * @param request
+     * @return
+     */
     public SyncResponse sync(
         UUID userId,
         SyncRequest request
@@ -67,6 +80,13 @@ public class SyncService {
         );
     }
 
+    /**
+     * a function for syncing the users db to the remote db (by applying the changhes )
+     * @param userId
+     * @param deviceId
+     * @param mutation
+     * @return
+     */
     private MutationAcknowledgement applyMutation(
         UUID userId,
         String deviceId,

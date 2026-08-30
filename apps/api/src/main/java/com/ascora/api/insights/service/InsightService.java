@@ -17,6 +17,10 @@ import lombok.RequiredArgsConstructor;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+/**
+ * a class for facilitating the creation of insights
+ * InsightService
+ */
 @Service
 @RequiredArgsConstructor
 public class InsightService {
@@ -24,6 +28,13 @@ public class InsightService {
     private final SyncChangeRepository syncChangeRepository;
     private final ObjectMapper objectMapper;
 
+    /**
+     * the function facilitating the creation of a workout summary
+     * @param jobId
+     * @param userId
+     * @param workoutId
+     * @param analysis
+     */
     @Transactional
     public void createWorkoutSummary(
         UUID jobId,

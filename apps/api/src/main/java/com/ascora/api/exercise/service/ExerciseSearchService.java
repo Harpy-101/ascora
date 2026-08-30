@@ -12,6 +12,10 @@ import com.ascora.api.exercise.mapper.ExerciseMapper;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * a class for facilitating the actual interaction with the ascenddb api 
+ * ExerciseSearchService
+ */
 @Service
 @RequiredArgsConstructor
 public class ExerciseSearchService {
@@ -19,6 +23,11 @@ public class ExerciseSearchService {
     private final ExerciseMapper exerciseMapper;
     private final ExerciseDetailsMapper exerciseDetailsMapper;
     
+    /**
+     * a function for performing the ecercise search
+     * @param request the users search request 
+     * @return the mapped result
+     */
     public ExerciseSearchResponse searchExercise(ExerciseSearchRequest request) {
         ExerciseSearchRequest normalizedRequest = request.normalized();
         AscendDbExerciseSearchResponse ascendResponse = ascendDbExerciseClient.searchExercises(normalizedRequest);
@@ -26,6 +35,11 @@ public class ExerciseSearchService {
         return exerciseMapper.toExerciseSearchResponse(ascendResponse);
     }
 
+    /**
+     * a function for fetcvhing the detials of a specific exercise
+     * @param exerciseId 
+     * @return the mapped result
+     */
     public ExerciseDetailsResponse getExerciseDetails(String exerciseId) {
         var externalResponse = ascendDbExerciseClient.getExerciseDetails(exerciseId);
 

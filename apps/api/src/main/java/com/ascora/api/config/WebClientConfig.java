@@ -5,6 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;
 
+/**
+ * a config file for srtting up the conection with the ascenddb api
+ * WebClientConfig
+ */
 @Configuration
 public class WebClientConfig {
 

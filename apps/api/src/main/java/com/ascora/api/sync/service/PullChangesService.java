@@ -9,27 +9,40 @@ import com.ascora.api.sync.dto.SyncChange;
 import com.ascora.api.sync.dto.SyncChangeRecord;
 import com.ascora.api.sync.repository.SyncChangeRepository;
 
+import lombok.RequiredArgsConstructor;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+/**
+ * a class for the pull changes service 
+ * PullChangesService
+ */
 @Service
+@RequiredArgsConstructor
 public class PullChangesService {
    
     private final SyncChangeRepository syncChangeRepository;
     private final ObjectMapper objectMapper;
 
-    public PullChangesService(
-        SyncChangeRepository syncChangeRepository,
-        ObjectMapper objectMapper
-    ) {
-        this.syncChangeRepository =
-            syncChangeRepository;
+    // public PullChangesService(
+    //     SyncChangeRepository syncChangeRepository,
+    //     ObjectMapper objectMapper
+    // ) {
+    //     this.syncChangeRepository =
+    //         syncChangeRepository;
 
-        this.objectMapper =
-            objectMapper;
-    }
+    //     this.objectMapper =
+    //         objectMapper;
+    // }
 
+    /**
+     * the actual function meant for pulling changes the user should know about
+     * @param userId
+     * @param cursor
+     * @param limit
+     * @return
+     */
     public PullChangesResult pull(
         UUID userId,
         String cursor,
@@ -78,6 +91,11 @@ public class PullChangesService {
         );
     }
 
+    /**
+     * a function for detrminin the users currsor in order to figure out from which point to include the changes
+     * @param cursor
+     * @return
+     */
     private long parseCursor(
         String cursor
     ) {
@@ -97,6 +115,7 @@ public class PullChangesService {
         }
     }
 
+    // a fuinction for preparing the changes to passed in the corrct format
     private SyncChange toSyncChange(
         SyncChangeRecord row
     ) {

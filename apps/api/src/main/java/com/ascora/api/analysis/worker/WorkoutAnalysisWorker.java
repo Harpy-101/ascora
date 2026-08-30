@@ -13,12 +13,20 @@ import com.ascora.api.workouts.WorkoutRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 
+ * WorkoutAnalysisWorker: This class represents the workout analysis worker and it's methods 
+ */
 @Component
 @RequiredArgsConstructor
 public class WorkoutAnalysisWorker {
     private final WorkoutRepository workoutRepository;
     private final InsightService insightService;
 
+    /**
+     * 
+     * @param job: the actual job the worker is meant to process
+     */
     public void process(
         WorkoutAnalysisJob job
     ) {
@@ -48,6 +56,11 @@ public class WorkoutAnalysisWorker {
 
     }
 
+    /**
+     * 
+     * @param workout the actul workout data 
+     * @return  the complete anaylsis
+     */
     private WorkoutSummaryInsightData analyzeWorkout(
         Workout workout
     ) {

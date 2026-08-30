@@ -7,11 +7,20 @@ import com.ascora.api.insights.dto.Insight;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * a repo fo facilitating the interaction with the insights table
+ * InsightRepository
+ */
 @Repository
 @RequiredArgsConstructor
 public class InsightRepository {
     private final JdbcTemplate jdbc;
 
+    /**
+     * a function for inserting a new insight
+     * @param insight 
+     * @return
+     */
     public boolean insert(Insight insight) {
         int inserted = jdbc.update(
             """

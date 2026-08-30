@@ -8,7 +8,15 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+/**
+ * a class for facilititaing the interaction with the app_users table.
+ * in reality I wouldv'e writtent that ina much better way as it's quite different frm the rest of the 
+ * groups - all the functions wouldv'e probably went under a repo file. 
+ * AppUser
+ */
 @Table("app_users")
+
+// all the data needed to represent a user's identity
 public class AppUser  {
     @Id
     private UUID id;
@@ -36,6 +44,7 @@ public class AppUser  {
     @Version
     private Long version;
 
+    // the app user constructor
     public AppUser(
         UUID id,
         String authSubject,
@@ -58,6 +67,7 @@ public class AppUser  {
         this.version = version;
     }
 
+    // a create user function
     public static AppUser create(
         String authSubject, 
         String fullName, 
@@ -79,6 +89,7 @@ public class AppUser  {
         );
     }
 
+    // an update user function
     public void updateProfile(
         String fullName, 
         String email, 

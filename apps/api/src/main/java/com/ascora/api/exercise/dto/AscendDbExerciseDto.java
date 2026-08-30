@@ -2,6 +2,7 @@ package com.ascora.api.exercise.dto;
 
 import java.util.List;
 
+// an object for representing the reerned exercise search 
 public record AscendDbExerciseDto(
         String exerciseId,
         String name,

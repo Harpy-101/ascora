@@ -14,17 +14,31 @@ import com.ascora.api.sync.dto.MutationAcknowledgement;
 import com.ascora.api.sync.dto.MutationProblem;
 import com.ascora.api.sync.dto.SyncMutation;
 
+import lombok.RequiredArgsConstructor;
+
+/**
+ * This class if for interacting with the proccesed mutations table
+ * ProcessedMutationRepository
+ */
 @Repository
+@RequiredArgsConstructor
 public class ProcessedMutationRepository {
 
     private final JdbcTemplate jdbc;
 
-    public ProcessedMutationRepository(
-        JdbcTemplate jdbc
-    ) {
-        this.jdbc = jdbc;
-    }
+    // public ProcessedMutationRepository(
+    //     JdbcTemplate jdbc
+    // ) {
+    //     this.jdbc = jdbc;
+    // }
 
+    /**
+     * this function is for attempting to clim the proccessing right for a user's mutation
+     * @param userId
+     * @param deviceId
+     * @param mutation
+     * @return
+     */
     public boolean tryClaim(
         UUID userId,
         String deviceId,
@@ -59,6 +73,12 @@ public class ProcessedMutationRepository {
         return inserted == 1;
     }
 
+    /**
+     * this function is for marking a mutation as completed
+     * @param userId
+     * @param mutationId
+     * @param acknowledgement
+     */
     public void complete(
         UUID userId,
         UUID mutationId,
@@ -100,6 +120,12 @@ public class ProcessedMutationRepository {
         }
     }
 
+    /**
+     * this function is meant to seek an already proccesed mutation
+     * @param userId
+     * @param mutationId
+     * @return
+     */
     public Optional<MutationAcknowledgement>
         findAcknowledgement(
             UUID userId,
@@ -186,6 +212,11 @@ public class ProcessedMutationRepository {
         return results.stream().findFirst();
     }
 
+    /**
+     * helper function for translating aggeragaet types to the expected db shape
+     * @param type
+     * @return
+     */
     private String toDbValue(
         AggregateType type
     ) {
@@ -194,6 +225,11 @@ public class ProcessedMutationRepository {
             .toLowerCase(Locale.ROOT);
     }
 
+    /**
+     * helper function for translating operation types to the expected db shape
+     * @param operation
+     * @return
+     */
     private String toDbValue(
         SyncOperation operation
     ) {
@@ -202,6 +238,11 @@ public class ProcessedMutationRepository {
             .toLowerCase(Locale.ROOT);
     }
 
+    /**
+     * helper function for trasnlating a status type into the excepted db shape
+     * @param status
+     * @return
+     */
     private String toDbValue(
         MutationStatus status
     ) {
@@ -210,14 +251,24 @@ public class ProcessedMutationRepository {
             .toLowerCase(Locale.ROOT);
     }
 
+    /**
+     * a helper function 
+     * @param value
+     * @return
+     */
     private AggregateType parseAggregateType(
-    String value
-) {
-    return AggregateType.valueOf(
-        value.toUpperCase(Locale.ROOT)
-    );
-}
+        String value
+    ) {
+        return AggregateType.valueOf(
+            value.toUpperCase(Locale.ROOT)
+        );
+    }
 
+    /**
+     * look at that! another helper function...
+     * @param value
+     * @return
+     */
     private MutationStatus parseStatus(
         String value
     ) {

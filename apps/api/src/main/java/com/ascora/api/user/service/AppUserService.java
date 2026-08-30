@@ -9,11 +9,20 @@ import com.ascora.api.user.repository.AppUserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * a class for handlignt get request for user data or user creations
+ * AppUserService
+ */
 @Service
 @RequiredArgsConstructor
 public class AppUserService  {
     private final AppUserRepository appUserRepository;
-    
+   
+    /**
+     * a function for constructing a new user
+     * @param jwt
+     * @return
+     */
     public AppUserResponse findOrCreateFromJwt(Jwt jwt) {
         String authSubject = jwt.getSubject();
         String email = jwt.getClaimAsString("email");

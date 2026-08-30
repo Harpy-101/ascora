@@ -10,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.node.ObjectNode;
 
+/**
+ * a class for initiating jobs (anaylysis jobs in this case)
+ * JobOutboxService
+ */
 @Service
 @RequiredArgsConstructor
 public class JobOutboxService {
@@ -17,6 +21,13 @@ public class JobOutboxService {
     private final JobOutboxRepository repository;
     private final ObjectMapper objectMapper;
 
+    /**
+     * a function for requesting a wokrout anaylisis 
+     * @param userId
+     * @param workoutId
+     * @param sourceMutationId
+     * @param serverVersion
+     */
     public void enqueueWorkoutAnalysis(
         UUID userId,
         UUID workoutId,

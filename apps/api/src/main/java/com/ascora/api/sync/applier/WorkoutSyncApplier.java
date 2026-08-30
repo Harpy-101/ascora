@@ -24,7 +24,10 @@ import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import java.util.OptionalLong;
 
-
+/**
+ * a class for facilitating the application of local user changes in workouts in the server
+ * WorkoutSyncApplier
+ */
 @Service
 @RequiredArgsConstructor
 public class WorkoutSyncApplier {
@@ -35,6 +38,13 @@ public class WorkoutSyncApplier {
     private final ProcessedMutationRepository processedMutationRepository;
     private final JobOutboxService jobOutboxService;
 
+    /**
+     * a function for applying the workout mutation
+     * @param userId
+     * @param deviceId
+     * @param mutation
+     * @return
+     */
     @Transactional
     public MutationAcknowledgement apply(
         UUID userId,
@@ -78,6 +88,13 @@ public class WorkoutSyncApplier {
         return acknowledgement;
     }
     
+    /**
+     * applying a mutation that is either an insert or an update
+     * @param userId
+     * @param deviceId
+     * @param mutation
+     * @return
+     */
     private MutationAcknowledgement applyUpsert(
         UUID userId,
         String deviceId,
@@ -123,9 +140,7 @@ public class WorkoutSyncApplier {
         }
         
         /*
-        * No base version means:
-        *
-         * "This workout has never existed on the server."
+        * No base version means:This workout has never existed on the server
         */
        if (mutation.baseServerVersion() == null) {
             return insertWorkout(
@@ -145,6 +160,14 @@ public class WorkoutSyncApplier {
 
     }
     
+    /**
+     * a function for handling the insertion of a supposed new workout
+     * @param userId
+     * @param deviceId
+     * @param mutation
+     * @param payload
+     * @return
+     */
     private MutationAcknowledgement insertWorkout(
         UUID userId,
         String deviceId,
@@ -152,8 +175,7 @@ public class WorkoutSyncApplier {
         WorkoutSyncPayload payload
     ) {
         /*
-        * A client claiming this is new shouldn't overwrite
-        * an existing workout.
+        * a client claiming this is new shouldn't overwrit an existing workout
         */
        var existing =
        workoutRepository.findByIdAndUserId(
@@ -179,7 +201,7 @@ public class WorkoutSyncApplier {
         workoutRepository.insert(workout);
         
         /*
-        * Record exactly what another device should receive.
+        * noting the change so it could be passed to back to the client/s
         */
        syncChangeRepository.insertUpsert(
            userId,
@@ -219,6 +241,14 @@ public class WorkoutSyncApplier {
         return acknowledgement;
     }
 
+    /**
+     * a fucntion for handling the updae of a supposedly preexsisting workout
+     * @param userId
+     * @param deviceId
+     * @param mutation
+     * @param payload
+     * @return
+     */
     private MutationAcknowledgement updateWorkout(
         UUID userId,
         String deviceId,
@@ -311,6 +341,13 @@ public class WorkoutSyncApplier {
         return acknowledgement;
     }
 
+    /**
+     * a function for handling workout deletion requests coming from the user
+     * @param userId
+     * @param deviceId
+     * @param mutation
+     * @return
+     */
     private MutationAcknowledgement applyDelete(
         UUID userId,
         String deviceId,
@@ -372,6 +409,13 @@ public class WorkoutSyncApplier {
         return acknowledgement;
     }
 
+    /**
+     * a functrion for turning a user's sync payload to an actual workout ready to be passed and refrenced locally
+     * @param payload
+     * @param userId
+     * @param serverVersion
+     * @return
+     */
     private Workout toWorkout(
         WorkoutSyncPayload payload,
         UUID userId,
@@ -415,6 +459,12 @@ public class WorkoutSyncApplier {
         );
     }
 
+    /**
+     * a function for construcint the mutation acks that were applied
+     * @param mutation
+     * @param serverVersion
+     * @return
+     */
     private MutationAcknowledgement
         appliedAcknowledgement(
             SyncMutation mutation,
@@ -432,6 +482,12 @@ public class WorkoutSyncApplier {
         );
     }
     
+    /**
+     *  a function for constructing the aacks that raised a coinflict
+     * @param mutation
+     * @param currentServerVersion
+     * @return
+     */
     private MutationAcknowledgement conflict(
         SyncMutation mutation,
         long currentServerVersion
@@ -454,7 +510,13 @@ public class WorkoutSyncApplier {
         );
     }
    
-
+    /**
+     * a function for constructing the acks that were rejected
+     * @param mutation
+     * @param code
+     * @param message
+     * @return
+     */
     private MutationAcknowledgement reject(
         SyncMutation mutation,
         String code,

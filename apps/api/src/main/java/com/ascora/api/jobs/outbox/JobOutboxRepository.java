@@ -14,12 +14,20 @@ import tools.jackson.core.JacksonException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+/**
+ * a repo for the job outbox 
+ * JobOutboxRepository
+ */
 @Repository
 @RequiredArgsConstructor
 public class JobOutboxRepository {
     private final JdbcTemplate jdbc;
     private final ObjectMapper objectMapper; 
 
+    /**
+     * a fucntion for inserting a new job
+     * @param job
+     */
     public void insert(
         JobOutboxRecord job
     ) {
@@ -44,6 +52,10 @@ public class JobOutboxRepository {
         );
     }
 
+    /**
+     * a function for finding the pending jobs
+     * @return
+     */
     public List<JobOutboxRecord> findPending() {
         return jdbc.query(
             """
@@ -98,6 +110,10 @@ public class JobOutboxRepository {
         );
     }
 
+    /**
+     * a function for marking a particular job as published 
+     * @param jobId
+     */
     public void makePublished(UUID jobId) {
         jdbc.update(
             """
@@ -109,6 +125,11 @@ public class JobOutboxRepository {
         );
     }
 
+    /**
+     * a function for error tracking
+     * @param jobId
+     * @param error
+     */
     public void recordFailure(UUID jobId, String error) {
         jdbc.update(
             """

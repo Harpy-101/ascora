@@ -6,6 +6,7 @@ import com.ascora.api.sync.domain.AggregateType;
 import com.ascora.api.sync.domain.SyncOperation;
 import tools.jackson.databind.JsonNode;
 
+// an object for comunicating the local mutation
 public record SyncMutation(
     UUID mutationId,
     AggregateType aggregateType,

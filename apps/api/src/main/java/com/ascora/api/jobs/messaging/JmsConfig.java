@@ -11,7 +11,10 @@ import org.springframework.jms.support.converter.MessageType;
 
 import com.ascora.api.analysis.messaging.WorkoutAnalysisJob;
 
-
+/**
+ * a config file for the jms messages
+ * JmsConfig
+ */
 @Configuration
 @EnableJms
 public class JmsConfig {

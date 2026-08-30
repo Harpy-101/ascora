@@ -6,6 +6,7 @@ import com.ascora.api.sync.domain.AggregateType;
 import com.ascora.api.sync.domain.SyncOperation;
 import com.ascora.api.sync.dto.SyncChangeRecord;
 
+import lombok.RequiredArgsConstructor;
 import tools.jackson.databind.JsonNode;
 
 import java.util.List;
@@ -13,18 +14,33 @@ import java.util.UUID;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
-
+/**
+ * a repo class for the sync_changes table interactions
+ * SyncChangeRepository
+ */
 @Repository
+@RequiredArgsConstructor
 public class SyncChangeRepository {
 
     private final JdbcTemplate jdbc;
 
-    public SyncChangeRepository(
-        JdbcTemplate jdbc
-    ) {
-        this.jdbc = jdbc;
-    }
+    // public SyncChangeRepository(
+    //     JdbcTemplate jdbc
+    // ) {
+    //     this.jdbc = jdbc;
+    // }
 
+    /**
+     * a function for insert/upsert operations
+     * @param userId
+     * @param aggregateId
+     * @param aggregateType
+     * @param serverVersion
+     * @param mutationId
+     * @param deviceId
+     * @param payload
+     * @return
+     */
     public long insertUpsert(
         UUID userId,
         UUID aggregateId,
@@ -86,6 +102,16 @@ public class SyncChangeRepository {
         return insertedSequence;
     }
  
+    /**
+     * a function for deletion operations
+     * @param userId
+     * @param aggregateId
+     * @param aggregateType
+     * @param serverVersion
+     * @param mutationId
+     * @param deviceId
+     * @return
+     */
     public long insertDelete(
         UUID userId,
         UUID aggregateId,
@@ -144,6 +170,11 @@ public class SyncChangeRepository {
     }
 
 
+    /**
+     * a duplicate helper function 
+     * @param type
+     * @return
+     */
     private String toDbValue(
         AggregateType type
     ) {
@@ -154,6 +185,13 @@ public class SyncChangeRepository {
         };
     }
 
+    /**
+     * a function for fetching the sync changes entires after a given cursor index
+     * @param userId
+     * @param cursor
+     * @param limit
+     * @return
+     */
     public List<SyncChangeRecord> findAfter(
         UUID userId,
         long cursor,
@@ -228,6 +266,11 @@ public class SyncChangeRepository {
         );
     }
 
+    /**
+     * another duplicate helper function
+     * @param value
+     * @return
+     */
     private AggregateType parseAggregateType(
         String value
     ) {
@@ -249,6 +292,11 @@ public class SyncChangeRepository {
         };
     }
 
+    /**
+     * and another duplicate helper function
+     * @param value
+     * @return
+     */
     private SyncOperation parseOperation(
         String value
     ) {
@@ -267,6 +315,11 @@ public class SyncChangeRepository {
         };
     }
 
+    /**
+     * a function for getting the next sequence value 
+     * @param userId
+     * @return
+     */
     private long nextUserSequence(UUID userId) {
         Long sequence = jdbc.queryForObject(
             """
@@ -297,6 +350,15 @@ public class SyncChangeRepository {
         return sequence;
     }
 
+    /**
+     * a streamlined function for server only insertion
+     * @param userId
+     * @param aggregateId
+     * @param aggregateType
+     * @param serverVersion
+     * @param payload
+     * @return
+     */
     public long insertServerGeneratedUpsert(
         UUID userId,
         UUID aggregateId,

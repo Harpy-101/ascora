@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import tools.jackson.databind.JsonNode;
 
+// a generic obect for represnting an insight 
 public record Insight(
     UUID id,
     UUID userId,

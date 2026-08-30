@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.ascora.api.sync.domain.AggregateType;
 import com.ascora.api.sync.domain.SyncOperation;
 
+// a representation of a sync_chnages table row
 public record SyncChangeRecord(
     long userSequence,
     UUID userId,

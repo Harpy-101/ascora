@@ -7,7 +7,7 @@ import com.ascora.api.sync.domain.SyncOperation;
 
 import tools.jackson.databind.JsonNode;
 
-
+// an opbject for comunicating to the user server changes that they need to respond to
 public record SyncChange(
     String cursor,
     AggregateType aggregateType,

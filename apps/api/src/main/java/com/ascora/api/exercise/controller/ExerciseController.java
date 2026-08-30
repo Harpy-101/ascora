@@ -13,12 +13,26 @@ import com.ascora.api.exercise.service.ExerciseSearchService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * the controller calss for the exercises endpoint
+ * ExerciseController
+ */
 @RestController 
 @RequestMapping("/api/exercises")
 @RequiredArgsConstructor
 public class ExerciseController {
     private final ExerciseSearchService exerciseSearchService;
     @GetMapping
+    /**
+     * the endpoint for the users exercise search 
+     * @param name
+     * @param bodyParts
+     * @param equipments
+     * @param exerciseType
+     * @param limit
+     * @param after
+     * @return
+     */
     public ExerciseSearchResponse searchExercise(
         @RequestParam(required = false) String name, 
         @RequestParam(required = false) String bodyParts,
@@ -35,6 +49,11 @@ public class ExerciseController {
         return res;
     }
 
+    /**
+     * the endpoint for fetching a specific exericse's details 
+     * @param exerciseId
+     * @return
+     */
     @GetMapping("/{exerciseId}")
     public ExerciseDetailsResponse getExerciseDetails(
         @PathVariable String exerciseId

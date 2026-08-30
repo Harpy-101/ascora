@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+// the users requested sync payload
 public record SyncRequest(
     @NotBlank
     String deviceId,
