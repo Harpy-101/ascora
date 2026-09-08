@@ -1,6 +1,6 @@
 import "../global.css";
 import { PortalHost } from "@rn-primitives/portal";
-import { ThemeProvider } from "@react-navigation/native";
+import { ThemeProvider } from "expo-router/react-navigation";
 import { NAV_THEME } from "@/lib/theme";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "react-native";

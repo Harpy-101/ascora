@@ -86,8 +86,8 @@ export function NativeMuscleBody({
   const viewBox =
     gender === "male"
       ? side === "front"
-        ? "0 0 724 1448"
-        : "580 0 724 1448"
+        ? "-30 0 724 1448"
+        : "690 0 724 1448"
       : side === "front"
         ? "-50 0 724 1448"
         : "580 0 724 1448";

@@ -19,13 +19,13 @@ export default function ActiveWorkout() {
 
   return (
     <SafeAreaView edges={["left", "right", "top"]} style={{ flex: 1 }}>
-      <ScrollView>
-        <ScreenHeader title="Workout" showBack />
-        <ActiveWorkoutScreen
-          getExerciseLibraryUrl={getExerciseLibraryUrl}
-          workoutId={workoutId}
-        />
-      </ScrollView>
+      {/* <ScrollView> */}
+      <ScreenHeader title="Workout" showBack />
+      <ActiveWorkoutScreen
+        getExerciseLibraryUrl={getExerciseLibraryUrl}
+        workoutId={workoutId}
+      />
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }

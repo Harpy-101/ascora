@@ -39,6 +39,7 @@ export default function NewGoalScreen() {
 
   return (
     <KeyboardAvoidingView
+      style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView>

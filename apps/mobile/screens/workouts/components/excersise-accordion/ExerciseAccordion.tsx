@@ -26,6 +26,7 @@ export default function ExerciseAccordion({
   onRemoveExercise: () => void;
 }) {
   const { control, setValue } = useFormContext<WorkoutFormValues>();
+
   const {
     fields: setFields,
     append,
@@ -133,11 +134,11 @@ export default function ExerciseAccordion({
           </Text>
 
           <View className="mt-2 flex-row gap-1">
-            {setFields.map((set) => (
+            {setFields.map((field, index) => (
               <View
-                key={set.id}
+                key={field.id}
                 className={
-                  set.completed
+                  exercise.sets[index]?.completed
                     ? "h-2 w-2 rounded-full bg-primary"
                     : "h-2 w-2 rounded-full bg-muted"
                 }

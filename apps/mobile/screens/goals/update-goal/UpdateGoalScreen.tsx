@@ -41,10 +41,17 @@ export default function UpdateGoalScreen({ goalId }: { goalId: string }) {
 
   return (
     <KeyboardAvoidingView
+      style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView>
-        <View className="flex-1 p-4">
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          padding: 16,
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View className="flex-1">
           <ScreenHeader
             title="Edit Goal"
             showBack
