@@ -23,7 +23,7 @@ export default function useSync() {
     }
 
     return result;
-  }, [user?.id, queryClient]);
+  }, [user, queryClient]);
 
   return {
     sync,

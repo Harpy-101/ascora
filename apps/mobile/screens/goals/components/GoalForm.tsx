@@ -1,7 +1,7 @@
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { goalSchema, GoalSchemaValues } from "../validation/goalSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextInput, View } from "react-native";
+import { Dimensions, Keyboard, TextInput, View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { GoalEntry, GoalOptions } from "../types";
 import GoalTypeSelector from "./GoalTypeSelector";
@@ -11,6 +11,7 @@ import { useRouter } from "expo-router";
 import ControlledDatePicker from "@/components/ui/controlled-date-picker";
 import { WeightEntry } from "@/screens/weight/types";
 import { usePreferences } from "@/contexts/user-prefrences-context";
+import { useEffect } from "react";
 
 type GoalFormProps = {
   entry?: GoalEntry;
@@ -50,6 +51,28 @@ export default function GoalForm({
     control: form.control,
     name: "startValue",
   });
+
+  useEffect(() => {
+    console.log("WINDOW", Dimensions.get("window"));
+    console.log("SCREEN", Dimensions.get("screen"));
+
+    const show = Keyboard.addListener("keyboardWillShow", (event) => {
+      console.log("KEYBOARD SHOW", {
+        height: event.endCoordinates.height,
+        screenY: event.endCoordinates.screenY,
+        width: event.endCoordinates.width,
+      });
+    });
+
+    const hide = Keyboard.addListener("keyboardWillHide", (event) => {
+      console.log("KEYBOARD HIDE", event.endCoordinates);
+    });
+
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
 
   return (
     <View className="flex-1 gap-4">

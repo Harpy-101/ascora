@@ -41,7 +41,7 @@ export default function useWorkoutAutoSave({
       if (!user?.id) {
         throw new Error("User must be logged in in order to sync data");
       }
-      void sync();
+      // void sync();
     },
   });
 }
